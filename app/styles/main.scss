@@ -951,6 +951,15 @@
 		background-position: top left, center center;
 	}
 
+/* Gallery */
+
+	.gallery {
+		> div {
+			float: left;
+			border: 1px solid #fff;
+		}
+	}
+
 /* Work */
 
 	#work {
@@ -1292,9 +1301,7 @@
 	@include breakpoint(normal) {
 
 		/* Basic */
-			body, input, textarea, select {
-				font-size: 15px;
-			}
+
 	}
 
 /* Narrow */
@@ -1302,9 +1309,7 @@
 	@include breakpoint(narrow) {
 
 		/* Basic */
-			body, input, textarea, select {
-				font-size: 13px;
-			}
+
 
 		/* Main */
 			.main.style2 {
@@ -1334,10 +1339,6 @@
 	@include breakpoint(narrower) {
 
 		/* Basic */
-			body, input, textarea, select {
-				font-size: 13px;
-			}
-
 			.container > .container {
 				width: 100% !important;
 			}
@@ -1377,7 +1378,7 @@
 		/* Basic */
 			body {
 				min-width: 320px;
-				font-size: 12px;
+				font-size: 1em;
 				line-height: 1.5em;
 			}
 
@@ -1561,6 +1562,18 @@
 					height: 2.5em;
 				}
 			}
+
+		/* Gallery */
+
+		.gallery {
+			> div {
+				&:nth-child(4),
+				&:nth-child(5),
+				&:nth-child(6) {
+					display: none;
+				}
+			}
+		}
 
 		/* Footer */
 			
