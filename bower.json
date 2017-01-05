@@ -2,7 +2,10 @@
   "name": "project1",
   "private": true,
   "dependencies": {
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "skel": "^3.0.1",
+    "jquery.scrollex": "https://github.com/ajlkn/jquery.scrollex.git#^0.2.1",
+    "jquery.poptrox": "https://github.com/ajlkn/jquery.poptrox.git#^2.5.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
