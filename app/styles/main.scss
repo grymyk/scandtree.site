@@ -957,6 +957,7 @@
 		padding: 0 1em;
 
 		> div {
+			width: 33.33%;
 			float: left;
 			border: 1em solid #fff;
 		}
@@ -1334,6 +1335,17 @@
 				}
 			}
 
+		/* Gallery */
+		.gallery {
+			> div {
+				width: 50%;
+
+				&:nth-child(5),
+				&:nth-child(6) {
+					display: none;
+				}
+			}
+		}
 	}
 
 /* Narrower */
@@ -1368,6 +1380,7 @@
 
 		/* Header */
 
+		/* Gallery */
 
 		/* Footer */
 			
@@ -1566,9 +1579,13 @@
 			}
 
 		/* Gallery */
-
 		.gallery {
 			> div {
+				width: 100%;
+				border: none;
+				border-bottom: 1em solid #fff;
+
+				&:nth-child(3),
 				&:nth-child(4),
 				&:nth-child(5),
 				&:nth-child(6) {
