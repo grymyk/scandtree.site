@@ -29,16 +29,16 @@ Handlebars.registerHelper('human_time', (timestamp) => {
 socket.on('fotos', (data) => {
     console.log(data);
 
-    let gallery_holder = $('#gallery').find('.gallery');
+    let galleryHolder = $('#gallery').find('.gallery');
 
     let html = template(data);
 
     $(html).hide();
 
-    gallery_holder
+    galleryHolder
         .empty()
         .append( $(html) )
         .fadeIn('slow');
 
-    //$(html).hide().insertBefore(gallery_holder).fadeIn('slow');
+    //$(html).hide().insertBefore(galleryHolder).fadeIn('slow');
 });
