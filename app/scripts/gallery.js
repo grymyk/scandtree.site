@@ -5,6 +5,9 @@ let template;
 let serverUrl = 'https://expigrt.herokuapp.com';
 
 //let socket = io.connect('http://localhost:5000');
+
+console.log('--- io --- \n', io.connect.toString() );
+
 let socket = io.connect(serverUrl);
 
 let templateUrl = serverUrl + '/templates/item.hbs';
