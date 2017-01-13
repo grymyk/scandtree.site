@@ -13,13 +13,13 @@ $.get(templateUrl, (data) => {
     template = Handlebars.compile(data);
 }, 'html')
 .done( () => {
-    console.log("second success");
+    console.log('second success');
 })
 .fail( () => {
-    console.log("error");
+    console.log('error');
 })
 .always( () => {
-    console.log("finished");
+    console.log('finished');
 });
 
 Handlebars.registerHelper('human_time', (timestamp) => {
