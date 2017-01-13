@@ -203,13 +203,12 @@
 
         function clickHandler(event) {
             var $target = $(event.target);
-
             var id = $target.attr('href');
 
-            var top = Math.ceil( $(id).first().offset().top - headerHeight );
+            var offsetTop = Math.ceil( $(id).first().offset().top - headerHeight );
 
             $('html, body').animate({
-                scrollTop: top + 'px'
+                scrollTop: offsetTop + 'px'
             }, 300);
 
             if (isClosed === false) {
@@ -223,7 +222,7 @@
         $nav.find('a').on('click', clickHandler);
         $('#about').on('click', clickHandler);
 
-        $('#top').on('click', function(event) {
+        /*$('#top').on('click', function(event) {
             var target = $(event.target);
             var id = target.attr('href');
 
@@ -236,6 +235,6 @@
             }
 
             return false;
-        });
+        });*/
     });
-})(jquery);
+})(jQuery);
