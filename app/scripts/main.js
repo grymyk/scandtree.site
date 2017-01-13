@@ -238,4 +238,4 @@
             return false;
         });
     });
-})(jQuery);
+})(jquery);
