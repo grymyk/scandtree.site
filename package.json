@@ -34,7 +34,10 @@
       "es6": true,
       "node": true,
       "browser": true,
-      "jquery": true
+      "jquery": true,
+      "io": "true",
+      "Handlebars": "true",
+      "moment": "true"
     },
     "rules": {
       "quotes": [

@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, io, Handlebars, moment) {
     'use strict';
 
     let template;
@@ -46,4 +46,4 @@
 
         //$(html).hide().insertBefore(galleryHolder).fadeIn('slow');
     });
-})(jQuery);
+})(jQuery, io, Handlebars, moment);
