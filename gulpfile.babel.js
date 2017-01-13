@@ -9,6 +9,8 @@ import {stream as wiredep} from 'wiredep';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+const PORT = process.env.PORT || 9000;
+
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')
     .pipe($.plumber())
@@ -95,7 +97,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
   browserSync({
     notify: false,
-    port: 9000,
+    port: PORT,
     server: {
       baseDir: ['.tmp', 'app'],
       routes: {
@@ -119,7 +121,7 @@ gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
 gulp.task('serve:dist', () => {
   browserSync({
     notify: false,
-    port: 9000,
+    port: PORT,
     server: {
       baseDir: ['dist']
     }
@@ -129,7 +131,7 @@ gulp.task('serve:dist', () => {
 gulp.task('serve:test', ['scripts'], () => {
   browserSync({
     notify: false,
-    port: 9000,
+    port: PORT,
     ui: false,
     server: {
       baseDir: 'test',
