@@ -5,7 +5,11 @@
     "jquery": "~2.1.1",
     "skel": "^3.0.1",
     "jquery.scrollex": "https://github.com/ajlkn/jquery.scrollex.git#^0.2.1",
-    "jquery.poptrox": "https://github.com/ajlkn/jquery.poptrox.git#^2.5.0"
+    "jquery.poptrox": "https://github.com/ajlkn/jquery.poptrox.git#^2.5.0",
+    "handlebars": "^4.0.5",
+    "socket.io-client": "^1.7.2",
+    "moment": "^2.17.1",
+    "livestamp": "^1.1.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
