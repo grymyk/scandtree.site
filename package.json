@@ -52,6 +52,6 @@
   },
   "scripts": {
     "start": "gulp serve:dist",
-    "postinstall": "gulp build"
+    "postinstall": "bower install & gulp build"
   }
 }
