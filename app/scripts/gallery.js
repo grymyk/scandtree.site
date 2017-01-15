@@ -1,28 +1,11 @@
 (function ($, io, Handlebars, moment) {
     'use strict';
 
-    let template;
-
     let serverUrl = 'https://expigrt.herokuapp.com';
 
-//let socket = io.connect('http://localhost:5000');
-
     let socket = io.connect(serverUrl);
-
-    let templateUrl = serverUrl + '/templates/item.hbs';
-
-    $.get(templateUrl, (data) => {
-        template = Handlebars.compile(data);
-    }, 'html')
-        .done( () => {
-            console.log('second success');
-        })
-        .fail( () => {
-            console.log('error');
-        })
-        .always( () => {
-            console.log('finished');
-        });
+    let source = $('#photo-template').html();
+    let template = Handlebars.compile(source);
 
     Handlebars.registerHelper('human_time', (timestamp) => {
         return moment.unix(timestamp).fromNow();
