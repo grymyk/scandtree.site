@@ -252,7 +252,7 @@
     <script id="photo-template" type="text/x-handlebars-template">
         {{#each photos}}
             <div>
-                <a href="{{standard_resolution}}" class="image fit">
+                <a href="{{standard_resolution}}" class="image fit" data-poptrox="ignore">
                     <img src="{{low_resolution}}" title="{{caption}}" alt="scandinavian tree" />
                 </a>
             </div>
@@ -266,9 +266,9 @@
     <script src="/bower_components/moment/min/moment.min.js"></script>
     <script src="/bower_components/livestamp/livestamp.min.js"></script>
     <script src="/bower_components/socket.io-client/dist/socket.io.min.js"></script>
-    <script src="/bower_components/skel/dist/skel.min.js"></script>
     <script src="/bower_components/jquery.poptrox/jquery.poptrox.min.js"></script>
     <script src="/bower_components/jquery.scrollex/jquery.scrollex.min.js"></script>
+    <script src="/bower_components/skel/dist/skel.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     
