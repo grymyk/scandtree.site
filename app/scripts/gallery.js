@@ -12,8 +12,6 @@
     });
 
     socket.on('fotos', (data) => {
-        console.log(data);
-
         let galleryHolder = $('#gallery').find('.gallery');
 
         let html = template(data);
@@ -24,7 +22,5 @@
             .empty()
             .append( $(html) )
             .fadeIn('slow');
-
-        //$(html).hide().insertBefore(galleryHolder).fadeIn('slow');
     });
 })(jQuery, io, Handlebars, moment);
