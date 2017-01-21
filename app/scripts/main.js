@@ -54,7 +54,7 @@
         }
 
         // Gallery.
-        $window.on('load', function() {
+        /*$window.on('load', function() {
             $('.gallery').poptrox({
                 baseZIndex: 10001,
                 useBodyOverflow: false,
@@ -67,7 +67,7 @@
                 windowMargin: (skel.breakpoint('mobile').active ? 5 : 50),
                 usePopupNav: true
             });
-        });
+        });*/
 
         // Section transitions.
         if (!skel.vars.mobile
@@ -120,11 +120,40 @@
         var headerHeight = $header.height();
 
         function setTopOffset(shift) {
-            sections.each(function() {
-                var halfWidth = $(this).width() / 2;
+            setFirstLimit(shift);
 
-                sectionIds[$(this).attr('id')] = Math.ceil( $(this).first().offset().top - shift - halfWidth);
-            });
+            setLimits(shift);
+        }
+
+        function setFirstLimit(shift) {
+            let property = sections.eq(0).attr('id');
+            let top = parseInt( sections.eq(0).first().offset().top, 10 );
+
+            let value = Math.ceil(top - shift);
+
+            sectionIds[property] = value;
+        }
+
+        function setLimits(shift) {
+            for (let i = 1, len = sections.length; i < len; i += 1) {
+                let obj = setScreanSize( sections.eq(i), sections.eq(i-1) );
+
+                sectionIds[obj.property] = obj.value - shift;
+            }
+        }
+
+        function setScreanSize(item, prev) {
+          let prevScreanPart = parseInt( prev.height() / 2, 10);
+
+          let property = item.attr('id');
+          let top = parseInt( item.first().offset().top, 10 );
+
+          let value = Math.ceil(top) - prevScreanPart;
+
+          return {
+              property: property,
+              value: value
+          }
         }
 
         $window
@@ -158,33 +187,37 @@
 
         setTopOffset(headerHeight);
 
-        $(window).scroll(function() {
+        $(window).on('scroll', () => {
             var scrolled = $(this).scrollTop();
 
             //when reaches the row, also add a class to the navigation
             for (var key in sectionIds) {
-                if (sectionIds.hasOwnProperty(key)) {
+
+                if ( sectionIds.hasOwnProperty(key) ) {
+
                     if (scrolled >= sectionIds[key]) {
-
-                        $nav.find('a').removeClass('active');
-
-                        var id = '#' + key;
+                        let id = '#' + key;
                         var current = $nav.find('a[href=' + id + ']');
-
-                        current.addClass('active');
-
-                        var marginLeft = parseInt( current.parent().css('margin-left'), 10);
-                        var left = current.parent().position().left + marginLeft + 'px';
-                        var width = current.parent().css('width');
-
-                        $('#nav-indicator').css({
-                            'left': left,
-                            'width': width
-                        });
                     }
                 }
             }
+
+            setNavIndicator(current);
         });
+
+        function setNavIndicator(current) {
+            $nav.find('a').removeClass('active');
+            current.addClass('active');
+
+            var marginLeft = parseInt( current.parent().css('margin-left'), 10);
+            var left = current.parent().position().left + marginLeft + 'px';
+            var width = current.parent().css('width');
+
+            $('#nav-indicator').css({
+                'left': left,
+                'width': width
+            });
+        }
 
         // Hamburger Menu
         var isClosed = true;
@@ -220,21 +253,5 @@
         }
 
         $nav.find('a').on('click', clickHandler);
-        $('#about').on('click', clickHandler);
-
-        /*$('#top').on('click', function(event) {
-            var target = $(event.target);
-            var id = target.attr('href');
-
-            if (id === 'undefined') {
-                $('html, body').animate({
-                    scrollTop: '0px'
-                }, 300);
-            } else {
-                clickHandler(event);
-            }
-
-            return false;
-        });*/
     });
 })(jQuery);
