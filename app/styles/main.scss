@@ -933,13 +933,13 @@ body {
 		a {
 			cursor: pointer;
 			background: #000;
+			text-decoration: none;
 
 			img {
 				opacity: 1;
 			}
 
 			&:hover {
-
 				img {
 					opacity: 0.5;
 				}
@@ -957,6 +957,8 @@ body {
 				text-align: center;
 				width: 100%;
 				display: none;
+			  	height: 1em;
+			  	line-height: 1em;
 
 				li {
 					line-height: 1em;
@@ -966,11 +968,12 @@ body {
 					padding: 0 0.5em;
 
 					span {
-						display: inline-block;
+						display: block;
 						color: #fff;
 						height: 20px;
 						width: 20px;
 						float: left;
+					  	margin: 2px 3px 0 0;
 					}
 
 					&.likes {
@@ -987,7 +990,6 @@ body {
 							background: #fff;
 							border-radius: 8px;
 							height: 16px;
-							margin: 0 3px 0 0;
 
 							&:before {
 								content: '\\';
@@ -1000,6 +1002,33 @@ body {
 					}
 				}
 			}
+
+		  .heart {
+			  position: relative;
+			  width: 20px;
+			  height: 18px;
+		  }
+
+		  .heart:before,
+		  .heart:after {
+			  position: absolute;
+			  content: "";
+			  left: 10px;
+			  top: 0;
+			  width: 10px;
+			  height: 16px;
+			  background: #fff;
+			  -moz-border-radius: 5px 5px 0 0;
+			  border-radius: 5px 5px 0 0;
+			  @include vendor('transform', 'rotate(-45deg)');
+			  @include vendor('transform-origin', '0 100%');
+		  }
+
+		  .heart:after {
+			  left: 0;
+			  @include vendor('transform', 'rotate(45deg)');
+			  @include vendor('transform-origin', '100% 100%');
+		  }
 		}
 	}
 }
@@ -1615,10 +1644,7 @@ body.is-touch {
 			width: 100%;
 			border: none;
 			border-bottom: 1em solid #fff;
-
-			&:nth-child(3),
-			&:nth-child(4),
-			&:nth-child(5),
+		  	&:nth-child(5),
 			&:nth-child(6) {
 				display: none;
 			}
@@ -1626,23 +1652,29 @@ body.is-touch {
 			a {
 				background: transparent;
 
+			  	&:hover {
+				  	opacity: 1;
+				}
+
 				ul {
 					position: static;
 					display: block;
 					margin: 0;
 					text-align: left;
+				  	height: 1.2em;
 
 					li {
-						padding: 0 1em 0 0;
-						margin: 0.3em 0 0;
+						padding: 0.2em 1em 0 0;
+					  	height: 20px;
 						color: #777;
 
 						span {
 							color: #C3AD55;
 						}
 
-						&.likes {
-
+						.heart:before,
+						.heart:after {
+							background: #C3AD55;
 						}
 
 						&.comments {

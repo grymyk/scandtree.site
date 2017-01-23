@@ -240,7 +240,12 @@
                 <a href="{{link}}" class="image fit" target="_blank">
                     <img src="{{standard_resolution}}" title="{{caption}}" alt="scandinavian tree" />
                     <ul>
-                        <li class="likes"><span>&#9829;</span>{{likes}}</li><li class="comments"><span></span>{{comments}}</li>
+                        {{#if likes}}
+                            <li class="likes"><span class="heart"></span>{{likes}}</li>
+                        {{/if}}
+                        {{#if comments}}
+                            <li class="comments"><span></span>{{comments}}</li>
+                        {{/if}}
                     </ul>
 				</a>
             </div>
