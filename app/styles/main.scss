@@ -164,16 +164,6 @@ br.clear {
 	position: relative;
 	display: inline-block;
 
-	&:before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		background: url('../images/overlay.png');
-	}
-
 	img {
 		display: block;
 		width: 100%;
@@ -938,17 +928,76 @@ body {
 		width: 33.33%;
 		float: left;
 		border: 1em solid #fff;
+		position: relative;
 
 		a {
 			cursor: pointer;
+			background: #000;
 
 			img {
 				opacity: 1;
 			}
 
 			&:hover {
+
 				img {
 					opacity: 0.5;
+				}
+
+				ul {
+					display: block;
+				}
+			}
+
+			ul {
+				overflow: hidden;
+				position: absolute;
+				top: 50%;
+				margin: -0.5em 0 0;
+				text-align: center;
+				width: 100%;
+				display: none;
+
+				li {
+					line-height: 1em;
+					font-weight: 500;
+					color: #fff;
+					display: inline-block;
+					padding: 0 0.5em;
+
+					span {
+						display: inline-block;
+						color: #fff;
+						height: 20px;
+						width: 20px;
+						float: left;
+					}
+
+					&.likes {
+						span {
+							font-size: 1.5em;
+							line-height: 0.5em;
+						}
+					}
+
+					&.comments {
+						span {
+							text-transform: uppercase;
+							position: relative;
+							background: #fff;
+							border-radius: 8px;
+							height: 16px;
+							margin: 0 3px 0 0;
+
+							&:before {
+								content: '\\';
+								position: absolute;
+								top: 0;
+								left: 8px;
+								font-weight: 700;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -1572,6 +1621,47 @@ body.is-touch {
 			&:nth-child(5),
 			&:nth-child(6) {
 				display: none;
+			}
+
+			a {
+				background: transparent;
+
+				ul {
+					position: static;
+					display: block;
+					margin: 0;
+					text-align: left;
+
+					li {
+						padding: 0 1em 0 0;
+						margin: 0.3em 0 0;
+						color: #777;
+
+						span {
+							color: #C3AD55;
+						}
+
+						&.likes {
+
+						}
+
+						&.comments {
+							span {
+								background: #C3AD55;
+								border: 1px solid #C3AD55;
+
+								&:before {
+									content: '\\';
+									position: absolute;
+									top: 0;
+									left: 8px;
+									font-weight: 700;
+									color: #C3AD55;
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	}
