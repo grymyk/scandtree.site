@@ -104,6 +104,7 @@ h3 {
 	font-size: 2em;
 	line-height: 1.25em;
 	text-align: center;
+  	position: relative;
 }
 
 h4 {
@@ -643,6 +644,28 @@ button {
 	}
 }
 
+#gallery h3 {
+
+  &:before {
+	  width: 2em;
+	  height: 2em;
+	  background: url('../images/ig_logo.png') 0 0 no-repeat;
+	  position: absolute;
+	  content: '';
+	  margin: 0.15em 0 0 -1.1em;
+  }
+}
+
+
+  .ig_logo {
+	  width: 36px;
+	  height: 36px;
+	  background: url('../images/ig_logo.png') 0 0 no-repeat;
+	  position: absolute;
+	  top: 20px;
+	  left: 20px;
+  }
+
 /* Dark */
 
 .dark {
@@ -1007,27 +1030,27 @@ body {
 			  position: relative;
 			  width: 20px;
 			  height: 18px;
-		  }
 
-		  .heart:before,
-		  .heart:after {
-			  position: absolute;
-			  content: "";
-			  left: 10px;
-			  top: 0;
-			  width: 10px;
-			  height: 16px;
-			  background: #fff;
-			  -moz-border-radius: 5px 5px 0 0;
-			  border-radius: 5px 5px 0 0;
-			  @include vendor('transform', 'rotate(-45deg)');
-			  @include vendor('transform-origin', '0 100%');
-		  }
+			&:before,
+			&:after {
+				position: absolute;
+				content: "";
+				left: 10px;
+				top: 0;
+				width: 10px;
+				height: 16px;
+				background: #fff;
+				-moz-border-radius: 5px 5px 0 0;
+				border-radius: 5px 5px 0 0;
+				@include vendor('transform', 'rotate(-45deg)');
+				@include vendor('transform-origin', '0 100%');
+			}
 
-		  .heart:after {
-			  left: 0;
-			  @include vendor('transform', 'rotate(45deg)');
-			  @include vendor('transform-origin', '100% 100%');
+			&:after {
+				left: 0;
+				@include vendor('transform', 'rotate(45deg)');
+				@include vendor('transform-origin', '100% 100%');
+			}
 		  }
 		}
 	}
@@ -1461,6 +1484,14 @@ body.is-touch {
 
 	h3 {
 		font-size: 1.6em;
+	}
+
+	#gallery {
+		h3 {
+			&:before {
+				margin: 0.05em 0 0 -1.4em;
+			}
+		}
 	}
 
 	form {
