@@ -4,8 +4,12 @@
     let serverUrl = 'https://expigrt.herokuapp.com';
 
     let socket = io.connect(serverUrl);
-    let source = $('#photo-template').html();
-    let template = Handlebars.compile(source);
+
+    let photoSource = $('#photo-template').html();
+    let statsSourse = $('#stats-template').html();
+
+    let photoTemplate = Handlebars.compile(photoSource);
+    let statsTemplate = Handlebars.compile(statsSource);
 
     Handlebars.registerHelper('human_time', (timestamp) => {
         return moment.unix(timestamp).fromNow();
@@ -14,13 +18,36 @@
     socket.on('fotos', (data) => {
         let galleryHolder = $('#gallery').find('.gallery');
 
-        let html = template(data);
+        let html = photoTemplate(data);
 
-        $(html).hide();
+        appendData(galleryHolder, data);
 
-        galleryHolder
+        /*galleryHolder
             .empty()
             .append( $(html) )
-            .fadeIn('slow');
+            .fadeIn('slow');*/
     });
+
+    socket.on('stats', (data) => {
+        let statsHolder = $('ig_stats');
+
+        let html = statsTemplate(data);
+
+        appendData(statsHolder, html);
+
+        /*statsHolder
+            .empty()
+            .append( $(html) )
+            .fadeIn('slow');*/
+    });
+
+    function appendData(holder, data) {
+        $(html).hide();
+
+        holder
+            .empty()
+            .append( $(data) )
+            .fadeIn('slow');
+    }
+
 })(jQuery, io, Handlebars, moment);

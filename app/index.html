@@ -96,6 +96,17 @@
             </p>
 			</header>
 
+            <div class="ig_stats">
+                <ul>
+                    <li><span>88</span></li><li>posts</li>
+                </ul>
+                <ul>
+                    <li><span>912</span></li><li>followers</li>
+                </ul>
+                <ul>
+                    <li><span>3064</span></li><li>following</li>
+                </ul>
+            </div>
 			<!-- Lightbox Gallery  -->
 			<div class="container 75% gallery">
 				<div>
@@ -232,6 +243,20 @@
 
         ga('create', 'UA-55823478-2', 'auto');
         ga('send', 'pageview');
+    </script>
+
+    <script id="stats-template" type="text/x-handlebars-template">
+        <div id="ig_stats">
+            <ul>
+                <li><span>{{media}}</span></li><li>posts</li>
+            </ul>
+            <ul>
+                <li><span>{{followers}}</span></li><li>followers</li>
+            </ul>
+            <ul>
+                <li><span>{{following}}</span></li><li>following</li>
+            </ul>
+        </div>
     </script>
 
     <script id="photo-template" type="text/x-handlebars-template">
