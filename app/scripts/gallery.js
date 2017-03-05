@@ -6,7 +6,7 @@
     let socket = io.connect(serverUrl);
 
     let photoSource = $('#photo-template').html();
-    let statsSourse = $('#stats-template').html();
+    let statsSource = $('#stats-template').html();
 
     let photoTemplate = Handlebars.compile(photoSource);
     let statsTemplate = Handlebars.compile(statsSource);
@@ -20,29 +20,19 @@
 
         let html = photoTemplate(data);
 
-        appendData(galleryHolder, data);
-
-        /*galleryHolder
-            .empty()
-            .append( $(html) )
-            .fadeIn('slow');*/
+        appendData(galleryHolder, html);
     });
 
     socket.on('stats', (data) => {
-        let statsHolder = $('ig_stats');
+        let statsHolder = $('#ig_stats');
 
         let html = statsTemplate(data);
 
         appendData(statsHolder, html);
-
-        /*statsHolder
-            .empty()
-            .append( $(html) )
-            .fadeIn('slow');*/
     });
 
     function appendData(holder, data) {
-        $(html).hide();
+        $(data).hide();
 
         holder
             .empty()
