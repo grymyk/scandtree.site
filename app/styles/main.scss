@@ -961,6 +961,7 @@ body {
 		float: left;
 		border: 1em solid #fff;
 		position: relative;
+		height: 400px;
 
 		a {
 			cursor: pointer;
@@ -1684,6 +1685,7 @@ body.is-touch {
 			width: 100%;
 			border: none;
 			border-bottom: 1em solid #fff;
+			height: auto;
 		  	&:nth-child(5),
 			&:nth-child(6) {
 				display: none;
@@ -1700,7 +1702,6 @@ body.is-touch {
 					position: static;
 					display: block;
 					margin: 0;
-					text-align: left;
 				  	height: 1.2em;
 
 					li {
