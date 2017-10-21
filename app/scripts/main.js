@@ -11,25 +11,25 @@
 		mobilenarrow: '(max-width: 480px)'
 	});
 
-    $(document).ready(function() {
-        var	$window = $(window),
-            $body = $('body'),
-            $header = $('#header'),
-            $nav = $('.desktop_menu_holder'),
-            $hamburger = $('#hamburger');
+    $(document).ready( () => {
+        const $window = $(window);
+        const $body = $('body');
+        const $header = $('#header');
+        const $nav = $('.desktop_menu_holder');
+        const $hamburger = $('#hamburger');
 
         // Disable animations/transitions until the page has loaded.
 
         $body.addClass('is-loading');
 
-        $window.on('load', function() {
-            window.setTimeout(function() {
+        $window.on('load', () => {
+            window.setTimeout( function() {
                 $body.removeClass('is-loading');
             }, 0);
         });
 
         // Touch mode.
-        skel.on('change', function() {
+        skel.on('change', () => {
             if (skel.vars.mobile || skel.breakpoint('mobile').active) {
                 $body.addClass('is-touch');
             } else {
@@ -41,7 +41,7 @@
         $('form').placeholder();
 
         // Prioritize "important" elements on mobile.
-        skel.on('+mobile -mobile', function() {
+        skel.on('+mobile -mobile', () => {
             $.prioritize(
                 '.important\\28 mobile\\29',
                 skel.breakpoint('mobile').active
@@ -70,41 +70,38 @@
         });*/
 
         // Section transitions.
-        if (!skel.vars.mobile
-            &&	skel.canUse('transition')) {
-
-            var on = function() {
-
+        if ( !skel.vars.mobile && skel.canUse('transition') ) {
+            const on = () => {
                 // Generic sections.
                 $('.main.style1')
                     .scrollex({
                         mode: 'middle',
                         delay: 100,
-                        initialize: function() { $(this).addClass('inactive'); },
-                        terminate: function() { $(this).removeClass('inactive'); },
-                        enter: function() { $(this).removeClass('inactive'); },
-                        leave: function() { $(this).addClass('inactive'); }
+                        initialize: () => { $(this).addClass('inactive'); },
+                        terminate: () => { $(this).removeClass('inactive'); },
+                        enter: () => { $(this).removeClass('inactive'); },
+                        leave: () => { $(this).addClass('inactive'); }
                     });
 
                 $('.main.style2')
                     .scrollex({
                         mode: 'middle',
                         delay: 100,
-                        initialize: function() { $(this).addClass('inactive'); },
-                        terminate: function() { $(this).removeClass('inactive'); },
-                        enter: function() { $(this).removeClass('inactive'); },
-                        leave: function() { $(this).addClass('inactive'); }
+                        initialize: () => { $(this).addClass('inactive'); },
+                        terminate: () => { $(this).removeClass('inactive'); },
+                        enter: () => { $(this).removeClass('inactive'); },
+                        leave: () => { $(this).addClass('inactive'); }
                     });
             };
 
-            var off = function() {
+            const off = () => {
                 // Generic sections.
                 $('.main.style1').unscrollex();
 
                 $('.main.style2').unscrollex();
             };
 
-            skel.on('change', function() {
+            skel.on('change', () => {
                 if (skel.breakpoint('mobile').active) {
                     (off)();
                 } else {
@@ -114,24 +111,30 @@
         }
 
         // Events.
-        var resizeTimeout;
-        var sectionIds = {};
-        var sections = $('section');
-        var headerHeight = $header.height();
-
-        function setTopOffset(shift) {
-            setFirstLimit(shift);
-
-            setLimits(shift);
-        }
+        let resizeTimeout = null;
+        let sectionIds = {};
+        const sections = $('section');
+        const headerHeight = $header.height();
 
         function setFirstLimit(shift) {
-            let property = sections.eq(0).attr('id');
-            let top = parseInt( sections.eq(0).first().offset().top, 10 );
+            const property = sections.eq(0).attr('id');
+            const top = parseInt( sections.eq(0).first().offset().top, 10 );
 
-            let value = Math.ceil(top - shift);
+            sectionIds[property] = Math.ceil(top - shift);
+        }
 
-            sectionIds[property] = value;
+        function setScreanSize(item, prev) {
+            const prevScreanPart = parseInt( prev.height() / 2, 10);
+
+            const property = item.attr('id');
+            const top = parseInt( item.first().offset().top, 10);
+
+            const value = Math.ceil(top) - prevScreanPart;
+
+            return {
+                property,
+                value
+            }
         }
 
         function setLimits(shift) {
@@ -142,22 +145,32 @@
             }
         }
 
-        function setScreanSize(item, prev) {
-          let prevScreanPart = parseInt( prev.height() / 2, 10);
-
-          let property = item.attr('id');
-          let top = parseInt( item.first().offset().top, 10 );
-
-          let value = Math.ceil(top) - prevScreanPart;
-
-          return {
-              property: property,
-              value: value
-          }
+        function setTopOffset(shift) {
+            setFirstLimit(shift);
+            setLimits(shift);
         }
 
+        $window.on('scroll', () => {
+            const scrolled = $window.scrollTop();
+
+            let current = null;
+
+            //when reaches the row, also add a class to the navigation
+            for (let key in sectionIds) {
+                if ( sectionIds.hasOwnProperty(key) ) {
+
+                    if (scrolled >= sectionIds[key]) {
+                        let id = '#' + key;
+                        current = $nav.find('a[href=' + id + ']');
+                    }
+                }
+            }
+
+            setNavIndicator(current);
+        });
+
         $window
-            .resize(function() {
+            .resize( () => {
                 // Disable animations/transitions.
                 $body.addClass('is-resizing');
 
@@ -181,48 +194,31 @@
 
                 setTopOffset(headerHeight);
             })
-            .load(function() {
+            .load( () => {
                 $window.trigger('resize');
             });
 
-        setTopOffset(headerHeight);
-
-        $(window).on('scroll', () => {
-            var scrolled = $(this).scrollTop();
-
-            //when reaches the row, also add a class to the navigation
-            for (var key in sectionIds) {
-
-                if ( sectionIds.hasOwnProperty(key) ) {
-
-                    if (scrolled >= sectionIds[key]) {
-                        let id = '#' + key;
-                        var current = $nav.find('a[href=' + id + ']');
-                    }
-                }
-            }
-
-            setNavIndicator(current);
-        });
-
         function setNavIndicator(current) {
             $nav.find('a').removeClass('active');
+
             current.addClass('active');
 
-            var marginLeft = parseInt( current.parent().css('margin-left'), 10);
-            var left = current.parent().position().left + marginLeft + 'px';
-            var width = current.parent().css('width');
+            const marginLeft = parseInt( current.parent().css('margin-left'), 10);
+            const parent = current.parent();
+
+            const left = parent.position().left + marginLeft + 'px';
+            const width = parent.css('width');
 
             $('#nav-indicator').css({
-                'left': left,
-                'width': width
+                left,
+                width
             });
         }
 
         // Hamburger Menu
-        var isClosed = true;
+        let isClosed = true;
 
-        $hamburger.on('click', function() {
+        $hamburger.on('click', () => {
             if (isClosed) {
                 $header.addClass('open');
                 isClosed = false;
@@ -235,10 +231,9 @@
         });
 
         function clickHandler(event) {
-            var $target = $(event.target);
-            var id = $target.attr('href');
+            const id = $(event.target).attr('href');
 
-            var offsetTop = Math.ceil( $(id).first().offset().top - headerHeight );
+            const offsetTop = Math.ceil( $(id).first().offset().top - headerHeight );
 
             $('html, body').animate({
                 scrollTop: offsetTop + 'px'
@@ -253,5 +248,7 @@
         }
 
         $nav.find('a').on('click', clickHandler);
+
+        setTopOffset(headerHeight);
     });
 })(jQuery);

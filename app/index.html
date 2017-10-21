@@ -57,19 +57,18 @@
 		}(document, 'script', 'facebook-jssdk'));
 	</script>
 
-	<!-- Header -->
 	<header id="header">
 		<h1 id="logo">
 			<a href="#about">scandinavian tree</a>
 		</h1>
 
-		<!-- Nav -->
 		<nav id="nav">
 			<a href="#" id="hamburger" class="nav-toggle"><span></span></a>
 			<div class="desktop_menu_holder">
 				<ul>
 					<li><a href="#about">about</a></li>
 					<li><a href="#gallery">gallery</a></li>
+					<li><a href="#constructor">constructor</a></li>
 					<li><a href="#product">products</a></li>
 					<li><a href="#contacts">contacts</a></li>
 				</ul>
@@ -78,7 +77,6 @@
 		</nav>
 	</header>
 
-	<!-- top -->
 	<section id="about" class="main style1 dark fullscreen home">
 		<div class="content container 75%">
 			<p class="motto">Natural and functional style of Nordic countries can decorate your home or be an elegant gift.
@@ -97,7 +95,6 @@
 			</header>
 
             <div id="ig_stats"></div>
-			<!-- Lightbox Gallery  -->
 			<div class="container 75% gallery">
 				<div>
 					<a href="images/fulls/top_left.jpg" class="image fit">
@@ -133,7 +130,12 @@
 		</div>
 	</section>
 
-	<!-- Select Tree -->
+    <section id="constructor" class="main style3 primary">
+        <div class="content container">
+			<div style="background: #0b97c4; text-align: center; width: 100%; height: 855px;">constructor</div>
+        </div>
+    </section>
+
 	<section id="product" class="main style3 secondary">
 		<div class="content container">
 			<header>
@@ -160,7 +162,6 @@
 		</div>
 	</section>
 
-	<!-- Make Order -->
 	<section id="contacts" class="main style3 secondary">
 		<div class="content container">
 			<header class="container 75%">
@@ -173,8 +174,6 @@
                     <li>phone: <a href="tel:+38-093-631-7033">+38(093) 631-70-33</a></li>
 					<li>email: <a href="mailto:info@scandinaviantree.com?subject=Scandinavian Tree">info@scandinaviantree.com</a></li>
 				</ul>
-
-				<!-- Contact Form -->
 				
 				<form id="ajax-contact" method="post" action="mailer.php">
 					<div class="row 50%">
@@ -206,7 +205,6 @@
 		</div>
 	</section>
 
-	<!-- Footer -->
 	<footer id="footer">
 		<ul class="actions social_networks">
 			<li>
@@ -270,20 +268,20 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/bower_components/handlebars/handlebars.min.js"></script>
-    <script src="/bower_components/moment/min/moment.min.js"></script>
-    <script src="/bower_components/livestamp/livestamp.min.js"></script>
-    <script src="/bower_components/socket.io-client/dist/socket.io.min.js"></script>
-    <script src="/bower_components/jquery.poptrox/jquery.poptrox.min.js"></script>
-    <script src="/bower_components/jquery.scrollex/jquery.scrollex.min.js"></script>
-    <script src="/bower_components/skel/dist/skel.min.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/skel/src/skel.js"></script>
+    <script src="/bower_components/jquery.scrollex/jquery.scrollex.js"></script>
+    <script src="/bower_components/jquery.poptrox/jquery.poptrox.js"></script>
+    <script src="/bower_components/handlebars/handlebars.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/livestamp/livestamp.js"></script>
+    <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     
     <!-- build:js scripts/main.js -->
 		<script src="scripts/util.js"></script>
-    <script src="scripts/main.js"></script>
+        <script src="scripts/main.js"></script>
 		<script src="scripts/gallery.js"></script>
 		<script src="scripts/form.js"></script>
     <!-- endbuild -->
