@@ -32,6 +32,7 @@
 
 	<!-- build:css styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
+	<link rel="stylesheet" href="styles/tree.css">
 	<!-- endbuild -->
 </head>
 <body>
@@ -130,9 +131,70 @@
 		</div>
 	</section>
 
-    <section id="constructor" class="main style3 primary">
+    <section id="constructor" class="main style3 secondary">
         <div class="content container">
-			<div style="background: #0b97c4; text-align: center; width: 100%; height: 855px;">constructor</div>
+            <div class="box container 75%">
+                <h3>constructor</h3>
+                <div id="scandtree">
+                    <div id="tree_holder"></div>
+                    <div id="input_params" data-owner="admin" class="open">
+                        <h4 data-action="toggle">Input</h4>
+                        <ul>
+                            <li data-mode="typeTree" class="mode">
+                                <label for="trunk">trunk</label>
+                                <input data-parameter="trunk"
+                                       id="trunk"
+                                       value="2"
+                                       name="trunk"
+                                       type="tel"
+                                       step="1"
+                                       min="1"
+                                       max="3"
+                                       hidden
+                                />
+                                <div class="voter">
+                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
+                                    <span data-action="change" data-action-change="up" class="up">+</span>
+                                </div>
+                            </li>
+                            <li data-mode="typeTree" class="mode">
+                                <label for="branch">branch</label>
+                                <input data-parameter="branch"
+                                       id="branch"
+                                       value="7"
+                                       name="branch"
+                                       type="tel"
+                                       min="5"
+                                       max="10"
+                                       step="1"
+                                       hidden
+                                />
+                                <div class="voter">
+                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
+                                    <span data-action="change" data-action-change="up" class="up">+</span>
+                                </div>
+                            </li>
+                            <li data-mode="typeTree" class="mode">
+                                <label for="spread">spread</label>
+                                <input data-parameter="spread"
+                                       id="spread"
+                                       value="26"
+                                       name="spread"
+                                       type="tel"
+                                       step="1"
+                                       min="1"
+                                       max="45"
+                                       hidden
+                                />
+                                <div class="voter">
+                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
+                                    <span data-action="change" data-action-change="up" class="up">+</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -143,20 +205,20 @@
 			</header>
 			<div class="box container 75%">
 				<div class="5u 12u(mobile) image left">
-					<img src="images/small.jpg" title="small scandinavian tree" alt="scandinavian tree" />
-          <h4>small</h4>
-          <ul class="tree_params">
-            <li>height: 22 sm</li>
-            <li>branches: 5 peaces.</li>
-          </ul>
+                    <img src="images/small.jpg" title="small scandinavian tree" alt="scandinavian tree" />
+                    <h4>small</h4>
+                    <ul class="tree_params">
+                        <li>height: 22 sm</li>
+                        <li>branches: 5 peaces.</li>
+                    </ul>
 				</div>
 				<div class="5u 12u(mobile) image right">
 					<img src="images/big.jpg" title="large scandinavian tree" alt="scandinavian tree" />
-          <h4>big</h4>
-          <ul class="tree_params">
-            <li>height: 1m</li>
-            <li>branches: 17peaces.</li>
-					</ul>
+                    <h4>big</h4>
+                    <ul class="tree_params">
+                        <li>height: 1m</li>
+                        <li>branches: 17peaces.</li>
+                    </ul>
 				</div>
 			</div>
 		</div>
@@ -284,6 +346,8 @@
         <script src="scripts/main.js"></script>
 		<script src="scripts/gallery.js"></script>
 		<script src="scripts/form.js"></script>
+		<script src="scripts/voter.js"></script>
+		<script src="scripts/scandtree.js"></script>
     <!-- endbuild -->
 </body>
 </html>

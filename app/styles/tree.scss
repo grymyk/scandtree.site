@@ -1,0 +1,191 @@
+#scandtree {
+  position: relative;
+}
+
+#tree_holder {
+  //height: 100%;
+  height: 920px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  margin: 60px 0 0;
+
+  ul {
+    height: 100%;
+    display: block;
+
+    li {
+      height: 20px;
+      display: block;
+      position: relative;
+      margin: 0 auto;
+    }
+  }
+}
+.prism_holder {
+  height: 20px;
+  position: relative;
+  perspective: 400px;
+  perspective-origin: -142% -400%;
+
+  .prism {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+
+  }
+}
+
+.branch {
+  display: block;
+  background: #F6BF4F;
+  /*border: 1px solid #000;*/
+  border-bottom: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.side_view {
+  /*margin: 0 auto;*/
+  position: absolute;
+}
+
+.prism .front {
+  background: rgb(11, 151, 196);
+}
+
+.prism .back {
+  background: #c45736;
+}
+
+.prism .right {
+  background: #c269c4;
+}
+
+.prism .left {
+  background: #5854c4;
+}
+
+.prism .top {
+  background: #3ec4be;
+}
+
+.prism .bottom {
+  background: #4fc426;
+}
+
+.output {
+  position: absolute;
+  left:0;
+  top: -60px;
+  border: 1px solid #000;
+  border-left: none;
+  border-top: none;
+  padding: 0 10px 10px;
+  background: rgba(#FAF6ED, 0.75);
+  z-index: 2;
+}
+
+#input_params {
+  position: absolute;
+  right: 0;
+  top: -60px;
+  border: 1px solid #000;
+  border-right: 1px solid rgba(#AAA, 0.75);
+  border-top: 1px solid rgba(#AAA, 0.75);
+  padding: 0 10px 10px;
+  background: rgba(#AAA, 0.25);
+  z-index: 3;
+
+  h4 {
+    margin: 10px 0 0;
+    text-transform: uppercase;
+    text-align: center;
+    //width: 205px;
+    width: 151px;
+    cursor: pointer;
+
+    &:after {
+      padding: 0 0 0 9px;
+      margin: 0;
+      content: "◂";
+      width: 9px;
+      height: 9px;
+      color: #000;
+    }
+  }
+
+  ul {
+    display: none;
+  }
+}
+
+#input_params.open {
+  h4 {
+    &:after {
+      content: '▾';
+    }
+  }
+
+  ul {
+    display: block;
+
+    li {
+      overflow: hidden;
+      margin: 20px 0;
+
+      label {
+        width: 70px;
+        height: 30px;
+        line-height: 30px;
+        display: block;
+        padding: 0;
+        margin: 0;
+        float: left;
+        text-transform: uppercase;
+      }
+
+      input {
+        padding: 0 0 0 2px;
+        margin: 0 5px;
+        width: 40px;
+        height: 28px;
+        line-height: 28px;
+        float: left;
+        font-size: 16px;
+        border: 1px solid #fff;
+
+        &.lock {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.voter {
+  text-align: center;
+  float: left;
+
+  .up,
+  .down {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 32px;
+    padding: 0 5px;
+    border: 1px solid #949494;
+    display: block;
+    float: left;
+    margin: 0 0 0 10px;
+    height: 28px;
+    line-height: 28px;
+    background: #949494;
+
+    &.lock {
+      background-color: transparent;
+      border-color: transparent;
+    }
+  }
+}
