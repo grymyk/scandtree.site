@@ -665,8 +665,6 @@ const scandtree = (function($, inputParams) {
     }
 
     function getInputValues() {
-        //let options = {};
-
         let inputs = inputParams.find('input');
 
         for (let i = 0, len = inputs.length; i < len; i += 1 ) {
@@ -679,11 +677,16 @@ const scandtree = (function($, inputParams) {
 
             setInputParam(property, value);
         }
-
-        //$.extend(config.input, options);
-        //console.log(options);
-        //console.log('config: ', config);
     }
+
+    let reset = function () {
+        getInputValues();
+
+        setSpread();
+        setCount();
+
+        showScandTree();
+    };
 
     function init() {
         getInputValues();
@@ -719,7 +722,7 @@ const scandtree = (function($, inputParams) {
     init();
 
     return {
-        changeHandler
+        reset
     }
 
 })(jQuery, $('#input_params'));

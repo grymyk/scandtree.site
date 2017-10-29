@@ -3,85 +3,102 @@
 function Voter(input, tree) {
     const self = this;
 
-    function widthHolder(value) {
-        if (!arguments.length) {
-            return tree.width();
+    function unlock(input, sibling) {
+        if (input && sibling) {
+            if ( input.classList.contains('lock') ) {
+                input.classList.remove('lock');
+                input.removeAttribute('readonly');
+
+                sibling.classList.remove('lock');
+            }
+        } else {
+            console.log('unlock: No elems!');
         }
     }
 
-    function getMaxWidth() {
-        const HORIZONT_PADDING = 40;
-        return widthHolder() - HORIZONT_PADDING;
-    }
+    function unlockAll() {
+        let elems = input.find('.lock');
 
-    function unlock(input, sibling) {
-        if ( input.classList.contains('lock') ) {
-            input.classList.remove('lock');
-            input.removeAttribute('readonly');
-
-            sibling.classList.remove('lock');
+        if (elems) {
+            for (let i = 0, len = elems.length; i < len; i += 1) {
+                if ( elems[i].classList.contains('lock') ) {
+                    elems[i].classList.remove('lock');
+                }
+            }
+        } else {
+            console.log('unlockAll: No ".lock" elems');
         }
     }
 
     function lock(input) {
-        input.classList.add('lock');
-        input.setAttribute('readonly', 'true');
+        if (input) {
+            input.classList.add('lock');
+            input.setAttribute('readonly', 'true');
 
-        target.classList.add('lock');
+            target.classList.add('lock');
+        } else {
+            console.log('lock: No elem!');
+        }
     }
 
     this.signAction = {
         down: (input) => {
-            let sibling = target.nextElementSibling;
-            let step = +input.attr('step');
-            let min = +input.attr('min');
+            if (input) {
+                let sibling = target.nextElementSibling;
+                let step = +input.attr('step');
+                let min = +input.attr('min');
 
-            let value = +input.val() - step;
+                let value = +input.val() - step;
 
-            if (value >= min) {
-                input.val(value);
+                if (value >= min) {
+                    input.val(value);
 
-                unlock(input[0], sibling);
+                    unlock(input[0], sibling);
+                } else {
+                    lock(input[0]);
+                }
+
+                step = null;
+                min = null;
+                value = null;
+            } else {
+                console.log('lock: No elem!');
             }
-
-            if (value === min) {
-                lock(input[0]);
-            }
-
-            step = null;
-            min = null;
-            value = null;
         },
 
         up: (input) => {
-            let sibling = target.previousElementSibling;
-            let step = +input.attr('step');
-            let max = +input.attr('max');
-            //let max = +input.attr('max') || getMaxWidth();
+            if (input) {
+                let sibling = target.previousElementSibling;
+                let step = +input.attr('step');
+                let max = +input.attr('max');
 
-            let value = +input.val() + step;
+                let value = +input.val() + step;
 
-            if (value <= max) {
-                input.val(value);
+                if (value <= max) {
+                    input.val(value);
 
-                unlock(input[0], sibling);
+                    unlock(input[0], sibling);
+                } else {
+                    lock(input[0]);
+                }
+
+                step = null;
+                max = null;
+                value = null;
+            } else {
+                console.log('lock: No elem!');
             }
-
-            if (value === max) {
-                lock(input[0]);
-            }
-
-            step = null;
-            max = null;
-            value = null;
         }
     };
 
     function generateChangeEvent(input) {
-        let inputChange = new Event('change');
-        // console.log(inputChange);
+        if (input) {
+            let inputChange = new Event('change');
 
-        input.dispatchEvent(inputChange);
+            input.dispatchEvent(inputChange);
+        } else {
+            console.log('lock: No elem!');
+        }
     }
 
     function getInput() {
@@ -106,6 +123,12 @@ function Voter(input, tree) {
 
     this.toggle = () => {
         input[0].classList.toggle('open');
+    };
+
+    this.reset = () => {
+        scandtree.reset();
+
+        unlockAll();
     };
 
     let target = null;
