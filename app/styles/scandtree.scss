@@ -1,0 +1,110 @@
+#tree_holder {
+  margin: 60px 0 0;
+}
+
+.branch {
+  background: #F6BF4F;
+  border-bottom: none;
+}
+
+.prism .front {
+  background: #dbb969;
+}
+
+.prism .back {
+  background: #c45736;
+}
+
+.prism .right {
+  background: #c269c4;
+}
+
+.prism .left {
+  background: #7d5c30;
+}
+
+.prism .top {
+  background: #b7a05c;
+}
+
+.prism .bottom {
+  background: #4fc426;
+}
+
+.output {
+  position: absolute;
+  left:0;
+  top: -60px;
+  border: 1px solid #000;
+  border-left: none;
+  border-top: none;
+  padding: 0 10px 10px;
+  background: rgba(#FAF6ED, 0.75);
+  z-index: 2;
+}
+
+#input_params {
+  right: 0;
+  top: -60px;
+  border: none;
+  padding: 0 10px 10px;
+  background: rgba(#AAA, 0.25);
+
+  h4 {
+    margin: 10px 0 0;
+    width: 241px;
+
+    &:after {
+      color: #777;
+    }
+  }
+}
+
+#input_params.open {
+  ul {
+    li {
+      margin: 20px 0;
+
+      label {
+        width: 85px;
+        height: 30px;
+        line-height: 1.5em;
+        font-size: 1em;
+      }
+
+      input {
+        padding: 0 0 0 2px;
+        margin: 0 5px;
+        width: 40px;
+        height: 28px;
+        line-height: 28px;
+        font-size: 1em;
+        border: 1px solid #fff;
+
+        &.lock {
+          background-color: transparent;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.voter {
+
+  .up,
+  .down {
+    font-size: 1.8em;
+    padding: 0 5px;
+    border: 1px solid transparent;
+    margin: 0 0 0 10px;
+    height: 28px;
+    line-height: 28px;
+    //background: transparent;
+    font-weight: 500;
+
+    &.lock {
+      color: rgba(119, 119, 119, 0.3);
+    }
+  }
+}

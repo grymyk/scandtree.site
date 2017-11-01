@@ -2,15 +2,6 @@
 
 /* global skel */
 (function($) {
-	skel.breakpoints({
-		wide: '(max-width: 1920px)',
-		normal: '(max-width: 1680px)',
-		narrow: '(max-width: 1280px)',
-		narrower: '(max-width: 1000px)',
-		mobile: '(max-width: 736px)',
-		mobilenarrow: '(max-width: 480px)'
-	});
-
     $(document).ready( () => {
         const $window = $(window);
         const $body = $('body');
@@ -153,20 +144,18 @@
         $window.on('scroll', () => {
             const scrolled = $window.scrollTop();
 
-            let current = null;
-
             //when reaches the row, also add a class to the navigation
             for (let key in sectionIds) {
                 if ( sectionIds.hasOwnProperty(key) ) {
 
                     if (scrolled >= sectionIds[key]) {
                         let id = '#' + key;
-                        current = $nav.find('a[href=' + id + ']');
+                        let current = $nav.find('a[href=' + id + ']');
+
+                        setNavIndicator(current);
                     }
                 }
             }
-
-            setNavIndicator(current);
         });
 
         $window
@@ -250,5 +239,14 @@
         $nav.find('a').on('click', clickHandler);
 
         setTopOffset(headerHeight);
+    });
+
+    skel.breakpoints({
+        wide: '(max-width: 1920px)',
+        normal: '(max-width: 1680px)',
+        narrow: '(max-width: 1280px)',
+        narrower: '(max-width: 1000px)',
+        mobile: '(max-width: 736px)',
+        mobilenarrow: '(max-width: 480px)'
     });
 })(jQuery);

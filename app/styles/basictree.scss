@@ -38,17 +38,19 @@
 .branch {
   display: block;
   background: #F6BF4F;
+  /*border: 1px solid #000;*/
   border-bottom: none;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
 .side_view {
+  /*margin: 0 auto;*/
   position: absolute;
 }
 
 .prism .front {
-  background: #dbb969;
+  background: rgb(11, 151, 196);
 }
 
 .prism .back {
@@ -60,11 +62,11 @@
 }
 
 .prism .left {
-  background: #7d5c30;
+  background: #5854c4;
 }
 
 .prism .top {
-  background: #b7a05c;
+  background: #3ec4be;
 }
 
 .prism .bottom {
@@ -85,18 +87,19 @@
 
 #input_params {
   position: absolute;
+  z-index: 3;
   right: 0;
   top: -60px;
   border: none;
   padding: 0 10px 10px;
-  background: rgba(#AAA, 0.25);
-  z-index: 3;
+  background: rgba(170, 170, 170, 0.25);
 
   h4 {
     margin: 10px 0 0;
     text-transform: uppercase;
     text-align: center;
-    width: 156px;
+    //width: 205px;
+    width: 151px;
     cursor: pointer;
 
     &:after {
@@ -105,7 +108,7 @@
       content: "◂";
       width: 9px;
       height: 9px;
-      color: #777;
+      color: #000;
     }
   }
 
@@ -136,8 +139,7 @@
         padding: 0;
         margin: 0;
         float: left;
-        font-size: 1.1em;
-        font-weight: 700;
+        text-transform: uppercase;
       }
 
       input {
@@ -149,8 +151,14 @@
         float: left;
         font-size: 16px;
         border: 1px solid #fff;
+        text-align: center;
 
         &.lock {
+          background-color: transparent;
+          border-color: transparent;
+        }
+
+        &.readonly {
           background-color: transparent;
           border-color: transparent;
         }
@@ -170,18 +178,19 @@
   .up,
   .down {
     cursor: pointer;
-    font-size: 1.8em;
+    font-size: 32px;
     padding: 0 5px;
-    border: 1px solid transparent;
+    border: 1px solid #949494;
     display: block;
     float: left;
     margin: 0 0 0 10px;
     height: 28px;
     line-height: 28px;
-    background: transparent;
+    background: #949494;
 
     &.lock {
-      color: rgba(119, 119, 119, 0.5);
+      background-color: transparent;
+      border-color: transparent;
     }
   }
 }

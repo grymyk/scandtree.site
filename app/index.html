@@ -32,7 +32,8 @@
 
 	<!-- build:css styles/main.css -->
 	<link rel="stylesheet" href="styles/main.css">
-	<link rel="stylesheet" href="styles/tree.css">
+	<link rel="stylesheet" href="styles/basictree.css">
+	<link rel="stylesheet" href="styles/scandtree.css">
 	<!-- endbuild -->
 </head>
 <body>
@@ -138,61 +139,65 @@
                 <div id="scandtree">
                     <div id="tree_holder"></div>
                     <div id="input_params" data-owner="admin" class="open">
-                        <h4 data-action="toggle">Params</h4>
+                        <h4 data-action="toggle">Parameters</h4>
                         <ul>
-                            <li data-mode="typeTree" class="mode">
-                                <label for="trunk">trunk:</label>
-                                <input data-parameter="trunk"
-                                       id="trunk"
-                                       value="2"
-                                       name="trunk"
-                                       type="tel"
-                                       step="1"
-                                       min="1"
-                                       max="3"
-                                       hidden
-                                />
-                                <div class="voter">
-                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
-                                    <span data-action="change" data-action-change="up" class="up">+</span>
-                                </div>
-                            </li><li data-mode="typeTree" class="mode">
-                                <label for="branch">branch:</label>
-                                <input data-parameter="branch"
-                                       id="branch"
-                                       value="7"
-                                       name="branch"
-                                       type="tel"
-                                       min="5"
-                                       max="10"
-                                       step="1"
-                                       hidden
-                                />
-                                <div class="voter">
-                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
-                                    <span data-action="change" data-action-change="up" class="up">+</span>
-                                </div>
-                            </li>
-                            <li data-mode="typeTree" class="mode">
-                                <label for="spread">spread:</label>
-                                <input data-parameter="spread"
-                                       id="spread"
-                                       value="26"
-                                       name="spread"
-                                       type="tel"
-                                       step="1"
-                                       min="1"
-                                       max="45"
-                                       hidden
-                                />
-                                <div class="voter">
-                                    <span data-action="change" data-action-change="down" class="down">&#8722;</span>
-                                    <span data-action="change" data-action-change="up" class="up">+</span>
-                                </div>
-                            </li>
-                            <li>
-                                <span data-action="reset" class="reset">reset</span>
-                            </li>
+							<li data-mode="typeTree" class="mode">
+								<label for="trunk">trunk</label>
+								<input data-parameter="trunk"
+									   id="trunk"
+									   value="2"
+									   name="trunk"
+									   type="tel"
+									   step="1"
+									   min="1"
+									   max="3"
+									   readonly
+									   class="readonly"
+								/>
+								<div class="voter">
+									<span data-action="change" data-action-change="down" class="down">&#8722;</span>
+									<span data-action="change" data-action-change="up" class="up">+</span>
+								</div>
+							</li>
+							<li data-mode="typeTree" class="mode">
+								<label for="branch">branch</label>
+								<input data-parameter="branch"
+									   id="branch"
+									   value="7"
+									   name="branch"
+									   type="tel"
+									   min="5"
+									   max="10"
+									   step="1"
+									   readonly
+									   class="readonly"
+								/>
+								<div class="voter">
+									<span data-action="change" data-action-change="down" class="down">&#8722;</span>
+									<span data-action="change" data-action-change="up" class="up">+</span>
+								</div>
+							</li>
+							<li data-mode="typeTree" class="mode">
+								<label for="spread">spread</label>
+								<input data-parameter="spread"
+									   id="spread"
+									   value="26"
+									   name="spread"
+									   type="tel"
+									   step="1"
+									   min="1"
+									   max="45"
+									   readonly
+									   class="readonly"
+								/>
+								<div class="voter">
+									<span data-action="change" data-action-change="down" class="down">&#8722;</span>
+									<span data-action="change" data-action-change="up" class="up">+</span>
+								</div>
+							</li>
+							<li>
+								<span data-action="reset" class="reset">reset</span>
+							</li>
                         </ul>
                     </div>
                 </div>

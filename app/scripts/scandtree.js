@@ -16,6 +16,24 @@ const scandtree = (function($, inputParams) {
             width: 26
         },
 
+        min: {
+            branch: 5,
+            height: 10,
+            longBoard: 100,
+            spread: 1,
+            trunk: 1,
+            width: 10
+        },
+
+        max: {
+            branch: 11,
+            height: 10,
+            longBoard: 10000,
+            spread: 45,
+            trunk: 3,
+            width: 40
+        },
+
         output: {
             count: null,
             delta: null,
@@ -49,6 +67,14 @@ const scandtree = (function($, inputParams) {
 
         treeHolder: '#tree_holder'
     };
+
+    function getMin(property) {
+        return +config.min[property];
+    }
+
+    function getMax(property) {
+        return +config.max[property];
+    }
 
     function treeParam(property) {
         return +config.tree[property];
@@ -620,7 +646,12 @@ const scandtree = (function($, inputParams) {
     }
 
     function getInputParameters(input) {
-        const MAX = 10240;
+        input = $(input);
+
+        let param = input.data('parameter');
+
+        let min = getMin(param);
+        let max = getMax(param);
 
         let options = {
             value: 0,
@@ -628,13 +659,11 @@ const scandtree = (function($, inputParams) {
             mode: '',
         };
 
-        input = $(input);
-
         let value = +input.val();
 
-        if (value > 0 && value < MAX) {
+        if (value >= min && value <= max) {
             options.value = value;
-            options.parameter = input.data('parameter');
+            options.parameter = param;
             options.mode = input.parents('li[data-mode]').data('mode');
             options.owner = input.parents('div[data-owner]').data('owner');
 

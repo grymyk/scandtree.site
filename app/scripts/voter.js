@@ -3,6 +3,14 @@
 function Voter(input, tree) {
     const self = this;
 
+    function unlockControl(sibling) {
+        if (sibling) {
+            sibling.classList.remove('lock');
+        } else {
+            console.log('unlock: No elem!');
+        }
+    }
+
     function unlock(input, sibling) {
         if (input && sibling) {
             if ( input.classList.contains('lock') ) {
@@ -30,6 +38,14 @@ function Voter(input, tree) {
         }
     }
 
+    function lockControl() {
+        if (target) {
+            target.classList.add('lock');
+        } else {
+            console.log('lock: No elem!');
+        }
+    }
+
     function lock(input) {
         if (input) {
             input.classList.add('lock');
@@ -41,26 +57,35 @@ function Voter(input, tree) {
         }
     }
 
+    function changeParam(input, step, sibling) {
+        if (input && step && sibling) {
+            let min = +input.attr('min');
+            let max = +input.attr('max');
+
+            let value = +input.val() + step;
+
+
+            if (value >= min && value <= max) {
+               input.val(value);
+
+                // unlock(input[0], sibling);
+                unlockControl(sibling);
+            } else {
+                // lock(input[0]);
+                lockControl();
+            }
+        } else {
+            console.log('changeParam: No step && sibling!');
+        }
+    }
+
     this.signAction = {
         down: (input) => {
             if (input) {
                 let sibling = target.nextElementSibling;
-                let step = +input.attr('step');
-                let min = +input.attr('min');
+                let step = +input.attr('step') * -1;
 
-                let value = +input.val() - step;
-
-                if (value >= min) {
-                    input.val(value);
-
-                    unlock(input[0], sibling);
-                } else {
-                    lock(input[0]);
-                }
-
-                step = null;
-                min = null;
-                value = null;
+                changeParam(input, step, sibling);
             } else {
                 console.log('lock: No elem!');
             }
@@ -70,21 +95,8 @@ function Voter(input, tree) {
             if (input) {
                 let sibling = target.previousElementSibling;
                 let step = +input.attr('step');
-                let max = +input.attr('max');
 
-                let value = +input.val() + step;
-
-                if (value <= max) {
-                    input.val(value);
-
-                    unlock(input[0], sibling);
-                } else {
-                    lock(input[0]);
-                }
-
-                step = null;
-                max = null;
-                value = null;
+                changeParam(input, step, sibling);
             } else {
                 console.log('lock: No elem!');
             }
