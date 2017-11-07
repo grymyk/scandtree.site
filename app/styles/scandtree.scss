@@ -44,15 +44,16 @@
 }
 
 #input_params {
+  padding: 0 20px 10px;
   right: 0;
   top: -60px;
   border: none;
-  padding: 0 10px 10px;
   background: rgba(#AAA, 0.25);
 
   h4 {
+    //width: 241px;
+    width: 171px;
     margin: 10px 0 0;
-    width: 241px;
 
     &:after {
       color: #777;

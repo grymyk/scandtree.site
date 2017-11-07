@@ -1,6 +1,6 @@
 'use strict';
 
-function Voter(input, tree) {
+function Voter(input) {
     const self = this;
 
     function unlockControl(sibling) {
@@ -64,9 +64,8 @@ function Voter(input, tree) {
 
             let value = +input.val() + step;
 
-
             if (value >= min && value <= max) {
-               input.val(value);
+                input.val(value);
 
                 // unlock(input[0], sibling);
                 unlockControl(sibling);
@@ -156,4 +155,4 @@ function Voter(input, tree) {
     });
 }
 
-new Voter( $('#input_params'), $('#tree_holder') );
+new Voter( $('#input_params') );

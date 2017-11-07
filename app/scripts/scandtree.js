@@ -8,12 +8,12 @@ const scandtree = (function($, inputParams) {
         },
 
         input: {
+            width: 16,
+            height: 10,
             branch: 11,
-            height: 15,
             longBoard: 1000,
             spread: 26,
             trunk: 1,
-            width: 26
         },
 
         min: {
