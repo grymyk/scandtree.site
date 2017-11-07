@@ -856,7 +856,7 @@ body {
 /* Header */
 #header {
 	position: fixed;
-	z-index: 10000;
+	z-index: 4;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -1563,6 +1563,7 @@ body.is-touch {
 			overflow: visible;
 
 			#nav {
+				height: 2.4em;
 
 				.desktop_menu_holder {
 					top: 0;

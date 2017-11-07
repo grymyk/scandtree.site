@@ -61,6 +61,8 @@
 }
 
 #input_params.open {
+  border-bottom: 1px solid #777;
+
   ul {
     li {
       margin: 20px 0;
@@ -86,6 +88,16 @@
           border-color: transparent;
         }
       }
+
+      .reset {
+        padding: 5px;
+        color: #fff;
+        background: #85c47e;
+
+        &:hover {
+          background: rgba(133, 196, 126, 0.7);
+        }
+      }
     }
   }
 }
@@ -100,11 +112,16 @@
     margin: 0 0 0 10px;
     height: 28px;
     line-height: 28px;
-    //background: transparent;
+    background: #85c47e;
+    color: #fff;
     font-weight: 500;
 
     &.lock {
       color: rgba(119, 119, 119, 0.3);
+    }
+
+    &:hover {
+      background: rgba(133, 196, 126, 0.7);
     }
   }
 }
