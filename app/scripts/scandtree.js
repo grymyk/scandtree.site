@@ -13,8 +13,24 @@ const scandtree = (function($, inputParams) {
             branch: 11,
             longBoard: 1000,
             spread: 26,
-            trunk: 1,
+            trunk: 1
         },
+
+        output: {
+            count: null,
+            delta: null,
+            allWidth: 0,
+            piece: [],
+            remainder: 0
+        },
+
+        tree: {
+            trunk: 1,
+            branch: 2,
+            last: 0
+        },
+
+        owner: 'user',
 
         min: {
             branch: 5,
@@ -29,26 +45,10 @@ const scandtree = (function($, inputParams) {
             branch: 11,
             height: 10,
             longBoard: 10000,
-            spread: 45,
+            spread: 90,
             trunk: 3,
             width: 40
         },
-
-        output: {
-            count: null,
-            delta: null,
-            allWidth: 0,
-            piece: [],
-            remainder: 0
-        },
-
-        tree: {
-            trunk: 1,
-            branch: 2,
-            last: 1
-        },
-
-        owner: 'user'
     };
 
     const wrapper = {
@@ -65,7 +65,8 @@ const scandtree = (function($, inputParams) {
             piece_width_holder: '.output .piece_width_holder'
         },
 
-        treeHolder: '#tree_holder'
+        treeHolder: '#tree_holder',
+        treeParent: '#tree_holder ul'
     };
 
     function getMin(property) {
@@ -81,8 +82,6 @@ const scandtree = (function($, inputParams) {
     }
 
     function getInputParam(property) {
-        //console.log(config.input);
-
         return +config.input[property];
     }
 
@@ -233,7 +232,7 @@ const scandtree = (function($, inputParams) {
         }
     }
 
-    function getBranchTemplate(width) {
+    function getBoardTemplate(width) {
         width = parseInt(width, 10);
         let height = parseInt( getInputParam('height'), 10);
 
@@ -244,8 +243,8 @@ const scandtree = (function($, inputParams) {
             deep
         };
 
-        let left = parseInt((width - deep) / 2, 10);
-        let top = parseInt((height - deep) / 2, 10);
+        let left = parseInt( (width - deep) / 2, 10);
+        let top = parseInt( (height - deep) / 2, 10);
 
         let options = {};
 
@@ -260,33 +259,30 @@ const scandtree = (function($, inputParams) {
     }
 
     function branchStyleTemplate(options) {
-        return 'style="' +
-            'z-index: ' + options.zIndex + '; ' +
+        return 'z-index: ' + options.zIndex + '; ' +
             'width: ' + options.width + 'px;' +
-            'height: ' + options.height + 'px;' +
-            '"';
+            'height: ' + options.height + 'px;"';
     }
 
-    function setBranchStyles(i, width) {
-        const count = getOutputParam('count');
+    function setBoardStyles(zIndex, width) {
         const height = getInputParam('height');
 
         let options = {};
 
-        options.zIndex = count - i;
+        options.zIndex = zIndex;
         options.width = parseInt(width, 10);
         options.height = parseInt(height, 10);
 
         return branchStyleTemplate(options);
     }
 
-    function showCount() {
+    /*function showCount() {
         let count = getOutputParam('count');
 
         console.log('Count: %d', count);
 
         $(wrapper.output.count).html(count);
-    }
+    }*/
 
     function showCountBrowser() {
         let count = getOutputParam('count');
@@ -498,65 +494,74 @@ const scandtree = (function($, inputParams) {
         return getWidthHolder() - padding;
     }
 
-    function renderScandTree() {
-        const longs = treeParam('branch');
+    function boardElem(zIndex, width) {
+        let li = document.createElement('LI');
 
-        const delta = getOutputParam('delta');
-        const count = getOutputParam('count');
+        li.style.cssText = setBoardStyles(zIndex, width);
+        li.innerHTML = getBoardTemplate(width);
 
-        const shorts = getInputParam('trunk');
+        return li;
+    }
 
-        let lo = 3;
-        let hi = lo + shorts - 1;
+    function boardString(zIndex, width) {
+        return '<li style="' + setBoardStyles(zIndex, width) + ' >' +
+            getBoardTemplate(width) + '</li>';
+    }
 
-        const step = longs + shorts;
+    function getSizeBranch() {
+        const short = getInputParam('trunk');
+        const longBoard = treeParam('branch');
 
-        let allWidth = 0;
-        let piece = [];
+        return short + longBoard;
+    }
 
+    function periodBranch(index) {
+        const size = getSizeBranch();
+
+        return Math.floor( Math.floor(index / size) );
+    }
+
+    function getLongBoard(index) {
+        const longBoard = treeParam('branch');
+        const size = getSizeBranch();
+
+        return Math.floor(index %  size / longBoard);
+    }
+
+    function getWidthBranch(index) {
+        return 2 * index * getOutputParam('delta');
+    }
+
+    function createBranchElems(i, len) {
         const fulcrum = getInputParam('width');
-
-        // const height = getHeightByOwner();
-        const height = getInputParam('height');
-
-        let maxWidth = getMaxWidth();
 
         let width = fulcrum;
 
-        let tree = '<ul>';
+        let zIndex = -i;
 
-        for (let i = 0; i < count; i += 1) {
-            width = 2 * i * delta + fulcrum;
+        let boards = [];
 
-            if (width >= maxWidth) {
-                return ;
+        for (let j = 0; i < len; i += 1) {
+            width = fulcrum;
+
+            if (j === 0)  {
+                let n = periodBranch(i);
+
+                width += getWidthBranch(n) + fulcrum;
             }
 
-            if (i >= lo && i <= hi) {
-                width = fulcrum;
+            if (width >= getMaxWidth() ) {
+                return boards;
             }
 
-            if (i > hi) {
-                lo += step;
-                hi += step;
-            }
+            boards.push( boardElem(zIndex, width) );
 
-            tree += '<li ' + setBranchStyles(i, width) + ' >' + getBranchTemplate(width) + '</li>';
+            zIndex -= 1;
 
-            allWidth += width;
-
-            piece.push( parseInt(width, 10) );
+            j = getLongBoard(i);
         }
 
-        tree += '</ul>';
-
-        setOutputParam('allWidth', parseInt(allWidth, 10) );
-
-        setOutputParam('piece', piece);
-
-        $(wrapper.treeHolder).html(tree);
-
-        pieceDistribution();
+        return boards;
     }
 
     function setSpread() {
@@ -564,14 +569,15 @@ const scandtree = (function($, inputParams) {
         const MAX_SPREAD = 179;
 
         const spread = getInputParam('spread');
-        // console.log('spread: ', spread);
+        const height = getInputParam('height');
+        const size = getSizeBranch();
 
         if (spread > 0 && spread < MAX_SPREAD) {
-            const radian = (90 - getInputParam('spread') / 2) * RADIAN;
+            const radian = (90 - spread / 2) * RADIAN;
 
-            let value = getInputParam('height') / Math.tan(radian);
+            let delta = size * height / Math.tan(radian);
 
-            setOutputParam('delta', value);
+            setOutputParam('delta', delta);
         }
     }
 
@@ -591,10 +597,37 @@ const scandtree = (function($, inputParams) {
         }
     }
 
-    function showScandTree() {
-        // console.log('showScandTree');
+    function getTopBoard() {
+        let zIndex = 0;
+        let width = getInputParam('width');
 
-        renderScandTree();
+        return boardElem(zIndex, width);
+    }
+
+    function showScandTree() {
+        let branchesHolder = document.createElement('UL');
+
+        let holder = $(wrapper.treeHolder)[0];
+        holder.appendChild(branchesHolder);
+
+        let topBoard = getTopBoard();
+
+        let parent = $(wrapper.treeParent)[0];
+        parent.appendChild(topBoard);
+
+        let number = getInputParam('branch');
+        let size = getSizeBranch('size');
+
+        let i = 1;
+        let len = number * size + 1;
+
+        let branches = createBranchElems(i, len);
+
+        if (branches) {
+            let elems = makeFragment(branches);
+
+            parent.appendChild(elems);
+        }
     }
 
     function showWidthScandTree() {
@@ -621,17 +654,100 @@ const scandtree = (function($, inputParams) {
         setOutputParam('count', parseInt((width - fulcrum) / (2 * delta) + 3, 10));
     }
 
-    function handlerInput(options) {
-        //console.log('options: ', options);
+    function makeFragment(boards) {
+        let fragment = document.createDocumentFragment();
 
+        boards.forEach( (board) => {
+            fragment.appendChild(board);
+        });
+
+        return fragment;
+    }
+
+    function appendBranch(diff) {
+        let parent = $(wrapper.treeParent)[0];
+
+        const count = getOutputParam('count');
+        const size = getSizeBranch();
+
+        let i = count + 1;
+        let len = count + size + 1;
+
+        let newBranches = createBranchElems(i, len);
+
+        if (newBranches) {
+            let fragment = makeFragment(newBranches);
+
+            if (parent) {
+                parent.appendChild(fragment);
+            } else {
+                console.log('No Parent!');
+            }
+        }
+
+        //parent.insertBefore(fragment, firstChild);
+    }
+
+    function deleteBranch(diff) {
+        let parent = $(wrapper.treeParent)[0];
+        let branches = parent.getElementsByTagName('LI');
+        let size = getSizeBranch();
+
+        let begin = branches.length - 1;
+        let finish = begin - diff * size;
+
+            for (let i = begin; i > finish; i -= 1 ) {
+                if (branches[i]) {
+                    parent.removeChild(branches[i]);
+                }
+            }
+        }
+
+    function deleteScandTree() {
+        let holder = $(wrapper.treeHolder)[0];
+        let parent = $(wrapper.treeParent)[0];
+
+        holder.removeChild(parent);
+    }
+
+    function updateScandTree() {
+        showScandTree();
+    }
+
+    function handlerInput(options) {
         let strategy = {
             board: (parameter, value) => {
                 setInputParam(parameter, value);
             },
 
             typeTree: (parameter, value) => {
-                setInputParam(parameter, value);
-                setCount();
+                if (parameter === 'branch') {
+                    let current = getInputParam(parameter);
+                    let difference = value - current;
+
+                    if (difference > 0) {
+                        appendBranch(difference);
+                    } else if (difference < 0) {
+                        difference = Math.abs(difference);
+
+                        deleteBranch(difference);
+                    }
+
+                    setInputParam(parameter, value);
+
+                    setSpread();
+                    setCount();
+
+                } else {
+                    deleteScandTree();
+
+                    setInputParam(parameter, value);
+
+                    setSpread();
+                    setCount();
+
+                    updateScandTree();
+                }
             },
 
             width: (width, value) => {
@@ -639,7 +755,6 @@ const scandtree = (function($, inputParams) {
             }
         };
 
-        setSpread();
         setOwner(options.owner);
 
         strategy[options.mode](options.parameter, options.value);
@@ -674,21 +789,6 @@ const scandtree = (function($, inputParams) {
         value = null;
     }
 
-    let changeHandler = function changeHandler(event) {
-        //console.log('changeHandler');
-        // console.log(event);
-
-        getInputParameters(event.target);
-
-        showScandTree();
-
-        showHeightScandTree();
-        showWidthScandTree();
-
-        showAdminBrowser();
-        //showAdminConsole();
-    };
-
     function getInputOwner() {
         setOwner( input_params.attr('data-owner') );
     }
@@ -697,18 +797,26 @@ const scandtree = (function($, inputParams) {
         let inputs = inputParams.find('input');
 
         for (let i = 0, len = inputs.length; i < len; i += 1 ) {
-            //console.log(inputs[i].getAttribute('data-parameter'), inputs[i].getAttribute('value'));
-
             let property = inputs[i].getAttribute('data-parameter');
             let value = +inputs[i].getAttribute('value');
-
-            //options[property] = value;
 
             setInputParam(property, value);
         }
     }
 
-    let reset = function () {
+    let changeHandler = function changeHandler(event) {
+        getInputParameters(event.target);
+
+        showHeightScandTree();
+        showWidthScandTree();
+
+        showAdminBrowser();
+        //showAdminConsole();
+    };
+
+    let reset = () => {
+        deleteScandTree();
+
         getInputValues();
 
         setSpread();
@@ -720,7 +828,6 @@ const scandtree = (function($, inputParams) {
     function init() {
         getInputValues();
 
-        // $(wrapper.inputHolder).on('change', 'input', changeHandler);
         $(wrapper.inputs).on('change', changeHandler);
 
         setSpread();
@@ -733,19 +840,6 @@ const scandtree = (function($, inputParams) {
 
         showAdminBrowser();
         //showAdminConsole();
-
-
-        /*$(document).on('keydown', (event) => {
-            if (event['keyCode'] === 13) {
-                console.log('Enter Key');
-            }
-        });*/
-
-        $(window).on('resize', () => {
-            //console.log('resize');
-
-            showScandTree();
-        })
     }
 
     init();

@@ -51,8 +51,7 @@
   background: rgba(#AAA, 0.25);
 
   h4 {
-    //width: 241px;
-    width: 171px;
+    width: 241px;
     margin: 10px 0 0;
 
     &:after {
@@ -95,6 +94,15 @@
         color: #fff;
         background: #85c47e;
 
+        &.lock {
+          color: #777;
+          background: none;
+
+          &:hover {
+            background: none;
+          }
+        }
+
         &:hover {
           background: rgba(133, 196, 126, 0.7);
         }
@@ -129,4 +137,8 @@
       background: rgba(133, 196, 126, 0.7);
     }
   }
+}
+
+#constructor .box {
+  min-height: 400px;
 }

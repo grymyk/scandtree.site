@@ -166,6 +166,11 @@
 
       .reset {
         cursor: pointer;
+        user-select: none;
+
+        &.lock {
+          cursor: text;
+        }
       }
     }
   }
@@ -187,6 +192,7 @@
     height: 28px;
     line-height: 28px;
     background: #949494;
+    user-select: none;
 
     &.lock {
       background-color: transparent;

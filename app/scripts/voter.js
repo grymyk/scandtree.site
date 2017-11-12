@@ -1,6 +1,8 @@
 'use strict';
 
-function Voter(input) {
+let isChange = false;
+
+function Voter(inputParams) {
     const self = this;
 
     function unlockControl(sibling) {
@@ -25,10 +27,11 @@ function Voter(input) {
     }
 
     function unlockAll() {
-        let elems = input.find('.lock');
+        const elems = inputParams.getElementsByClassName('lock');
+        const len = elems.length;
 
         if (elems) {
-            for (let i = 0, len = elems.length; i < len; i += 1) {
+            for (let i = len - 1; i >= 0; i -= 1) {
                 if ( elems[i].classList.contains('lock') ) {
                     elems[i].classList.remove('lock');
                 }
@@ -57,34 +60,32 @@ function Voter(input) {
         }
     }
 
-    function changeParam(input, step, sibling) {
-        if (input && step && sibling) {
-            let min = +input.attr('min');
-            let max = +input.attr('max');
+    function changeParam(input, step, sibs) {
+        if (input && step && sibs) {
+            let min = +input.getAttribute('min');
+            let max = +input.getAttribute('max');
 
-            let value = +input.val() + step;
+            let value = +input.getAttribute('value') + step;
 
             if (value >= min && value <= max) {
-                input.val(value);
+                input.setAttribute('value', value);
 
-                // unlock(input[0], sibling);
-                unlockControl(sibling);
+                unlockControl(sibs);
             } else {
-                // lock(input[0]);
                 lockControl();
             }
         } else {
-            console.log('changeParam: No step && sibling!');
+            console.log('changeParam: No step && sibs!');
         }
     }
 
     this.signAction = {
         down: (input) => {
             if (input) {
-                let sibling = target.nextElementSibling;
-                let step = +input.attr('step') * -1;
+                let nextSib = target.nextElementSibling;
+                let step = +input.getAttribute('step') * -1;
 
-                changeParam(input, step, sibling);
+                changeParam(input, step, nextSib);
             } else {
                 console.log('lock: No elem!');
             }
@@ -92,10 +93,10 @@ function Voter(input) {
 
         up: (input) => {
             if (input) {
-                let sibling = target.previousElementSibling;
-                let step = +input.attr('step');
+                let prevSib = target.previousElementSibling;
+                let step = +input.getAttribute('step');
 
-                changeParam(input, step, sibling);
+                changeParam(input, step, prevSib);
             } else {
                 console.log('lock: No elem!');
             }
@@ -113,38 +114,83 @@ function Voter(input) {
     }
 
     function getInput() {
-        return $(target).parents('.mode').find('input');
+        const liParent = target.parentNode.parentNode;
+
+        return liParent.getElementsByTagName('INPUT')[0];
     }
 
     function getSign() {
         return target.getAttribute('data-action-change');
     }
 
-    this.change = () => {
-        const input = getInput();
+    function setDefaultValues() {
+        const config = {
+            width: 16,
+            height: 10,
+            longBoard: 1000,
+            trunk: 2,
+            branch: 7,
+            spread: 25
+        };
 
+        let inputs = inputParams.getElementsByTagName('INPUT');
+
+        for (let i = 0, len = inputs.length; i < len; i += 1 ) {
+            let property = inputs[i].getAttribute('data-parameter');
+            let value = config[property];
+
+            inputs[i].setAttribute('value', value);
+        }
+    }
+
+    function unLockReset() {
+        const reset = inputParams.getElementsByClassName('reset')[0];
+
+        if (reset.classList.contains('lock') ) {
+            reset.classList.remove('lock')
+        }
+    }
+
+    function lockReset() {
+        const reset = inputParams.getElementsByClassName('reset')[0];
+
+        if (reset.classList.contains('lock') === false) {
+            reset.classList.add('lock')
+        }
+    }
+
+    this.change = () => {
+        isChange = true;
+
+        const input = getInput();
         const sign = getSign();
 
         if (sign) {
             self.signAction[sign](input);
         }
 
-        generateChangeEvent(input[0])
+        generateChangeEvent(input);
+
+        unLockReset();
     };
 
     this.toggle = () => {
-        input[0].classList.toggle('open');
+        inputParams.classList.toggle('open');
     };
 
     this.reset = () => {
-        scandtree.reset();
+        if (isChange) {
+            setDefaultValues();
+            scandtree.reset();
+            unlockAll();
 
-        unlockAll();
+            lockReset();
+        }
     };
 
     let target = null;
 
-    input.on('click', (event) => {
+    inputParams.addEventListener('click', (event) => {
         target = event.target;
 
         let action = target.getAttribute('data-action');
@@ -155,4 +201,5 @@ function Voter(input) {
     });
 }
 
-new Voter( $('#input_params') );
+const inputParams = document.getElementById('input_params');
+new Voter( inputParams );
