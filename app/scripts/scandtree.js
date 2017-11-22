@@ -32,28 +32,15 @@ const scandtree = (function($, inputParams) {
 
         owner: 'user',
 
-        min: {
-            branch: 5,
-            height: 10,
-            longBoard: 100,
-            spread: 1,
-            trunk: 1,
-            width: 10
-        },
-
-        max: {
-            branch: 11,
-            height: 10,
-            longBoard: 10000,
-            spread: 90,
-            trunk: 3,
-            width: 40
-        },
+        limit: 0,
     };
 
     const wrapper = {
         inputHolder: '#input_params',
         inputs: '#input_params input',
+        spreadInput: '#input_params input[data-parameter="spread"]',
+        branchInput: '#input_params input[data-parameter="branch"]',
+        trunkInput: '#input_params input[data-parameter="trunk"]',
 
         output: {
             height: '.output .height',
@@ -68,14 +55,6 @@ const scandtree = (function($, inputParams) {
         treeHolder: '#tree_holder',
         treeParent: '#tree_holder ul'
     };
-
-    function getMin(property) {
-        return +config.min[property];
-    }
-
-    function getMax(property) {
-        return +config.max[property];
-    }
 
     function treeParam(property) {
         return +config.tree[property];
@@ -487,11 +466,30 @@ const scandtree = (function($, inputParams) {
         }
     }
 
-    function getMaxWidth() {
-        const FRACTION = 10;
-        let padding = Math.floor(getWidthHolder() / FRACTION);
+    function setMaxWidthLimit() {
+        let horizontPad = 50;
 
-        return getWidthHolder() - padding;
+        config.limit = Math.floor( (getWidthHolder() - horizontPad) / 2)
+    }
+
+    function getMaxWidthLimit() {
+        return config.limit;
+    }
+
+    function getArea() {
+        const maxWidth = getMaxWidthLimit();
+        const branch = getInputParam('branch');
+        const size = getSizeBranch();
+        const boardHeight = getInputParam('height');
+        const height = branch * size * boardHeight;
+        const tgAlpha = height / maxWidth;
+        //console.log('tgAlpha: ', tgAlpha);
+
+        const alpha = Math.atan(tgAlpha);
+        //console.log('alpha: ', alpha);
+        const base = height / Math.tan(alpha);
+
+        return height * base / 2;
     }
 
     function boardElem(zIndex, width) {
@@ -501,11 +499,6 @@ const scandtree = (function($, inputParams) {
         li.innerHTML = getBoardTemplate(width);
 
         return li;
-    }
-
-    function boardString(zIndex, width) {
-        return '<li style="' + setBoardStyles(zIndex, width) + ' >' +
-            getBoardTemplate(width) + '</li>';
     }
 
     function getSizeBranch() {
@@ -529,13 +522,59 @@ const scandtree = (function($, inputParams) {
     }
 
     function getWidthBranch(index) {
-        return 2 * index * getOutputParam('delta');
+        const fulcrum = getInputParam('width');
+
+        return 2 * index * getOutputParam('delta') + fulcrum;
+    }
+
+    function getMaxTrunk() {
+        const size = getSizeBranch();
+        const height = getInputParam('height');
+        const branch = getInputParam('branch');
+        const limit = getMaxWidthLimit();
+    }
+
+    function getMaxBranch() {
+        const size = getSizeBranch();
+        const height = getInputParam('height');
+        const limit = getMaxWidthLimit();
+        const maxSpread = +$(wrapper.spreadInput)[0].getAttribute('max');
+        const alphaRadian = maxSpread * Math.PI / 180;
+
+        return Math.ceil( limit / Math.tan(alphaRadian / 2) / size / height);
+    }
+
+    function setMaxBranch() {
+        const branch = getMaxBranch();
+
+        $(wrapper.branchInput)[0].setAttribute('max', branch);
+    }
+
+    function getMaxSpread(branch) {
+        const STEP = 5;
+        const MAX_BRANCH = 10;
+        const size = getSizeBranch();
+        const height = getInputParam('height');
+        branch = MAX_BRANCH || getInputParam('branch');
+        const limit = getMaxWidthLimit();
+        let tgA = branch * height * size / limit;
+        let alphaRadian = Math.atan(tgA);
+        let alphaDegree = Math.floor(alphaRadian * 180 / Math.PI);
+        let maxSpread = 180 - 2 * alphaDegree;
+
+        return Math.floor(maxSpread / STEP ) * STEP;
+    }
+
+    function setMaxSpread() {
+        const spread = getMaxSpread();
+
+        $(wrapper.spreadInput)[0].setAttribute('max', spread);
     }
 
     function createBranchElems(i, len) {
         const fulcrum = getInputParam('width');
 
-        let width = fulcrum;
+        let width = 0;
 
         let zIndex = -i;
 
@@ -547,11 +586,7 @@ const scandtree = (function($, inputParams) {
             if (j === 0)  {
                 let n = periodBranch(i);
 
-                width += getWidthBranch(n) + fulcrum;
-            }
-
-            if (width >= getMaxWidth() ) {
-                return boards;
+                width = getWidthBranch(n) + fulcrum;
             }
 
             boards.push( boardElem(zIndex, width) );
@@ -564,21 +599,28 @@ const scandtree = (function($, inputParams) {
         return boards;
     }
 
-    function setSpread() {
+    function getDelta(spread) {
         const RADIAN = Math.PI / 180;
         const MAX_SPREAD = 179;
 
-        const spread = getInputParam('spread');
         const height = getInputParam('height');
         const size = getSizeBranch();
 
         if (spread > 0 && spread < MAX_SPREAD) {
             const radian = (90 - spread / 2) * RADIAN;
 
-            let delta = size * height / Math.tan(radian);
-
-            setOutputParam('delta', delta);
+            return size * height / Math.tan(radian);
         }
+
+        return 0;
+    }
+
+    function setSpread() {
+        const spread = getInputParam('spread');
+
+        let delta = getDelta(spread);
+
+        setOutputParam('delta', delta);
     }
 
     function setCount() {
@@ -627,6 +669,8 @@ const scandtree = (function($, inputParams) {
             let elems = makeFragment(branches);
 
             parent.appendChild(elems);
+        } else {
+            console.log('No branches!');
         }
     }
 
@@ -684,8 +728,6 @@ const scandtree = (function($, inputParams) {
                 console.log('No Parent!');
             }
         }
-
-        //parent.insertBefore(fragment, firstChild);
     }
 
     function deleteBranch(diff) {
@@ -756,37 +798,10 @@ const scandtree = (function($, inputParams) {
         };
 
         setOwner(options.owner);
+        setMaxSpread();
+        setMaxBranch();
 
         strategy[options.mode](options.parameter, options.value);
-    }
-
-    function getInputParameters(input) {
-        input = $(input);
-
-        let param = input.data('parameter');
-
-        let min = getMin(param);
-        let max = getMax(param);
-
-        let options = {
-            value: 0,
-            parameter: '',
-            mode: '',
-        };
-
-        let value = +input.val();
-
-        if (value >= min && value <= max) {
-            options.value = value;
-            options.parameter = param;
-            options.mode = input.parents('li[data-mode]').data('mode');
-            options.owner = input.parents('div[data-owner]').data('owner');
-
-            handlerInput(options);
-        }
-
-        options = null;
-        value = null;
     }
 
     function getInputOwner() {
@@ -804,16 +819,6 @@ const scandtree = (function($, inputParams) {
         }
     }
 
-    let changeHandler = function changeHandler(event) {
-        getInputParameters(event.target);
-
-        showHeightScandTree();
-        showWidthScandTree();
-
-        showAdminBrowser();
-        //showAdminConsole();
-    };
-
     let reset = () => {
         deleteScandTree();
 
@@ -828,10 +833,13 @@ const scandtree = (function($, inputParams) {
     function init() {
         getInputValues();
 
-        $(wrapper.inputs).on('change', changeHandler);
-
         setSpread();
         setCount();
+
+        setMaxWidthLimit();
+
+        const MAX_BRANCH = 10;
+        setMaxSpread(MAX_BRANCH);
 
         showScandTree();
 
@@ -845,7 +853,8 @@ const scandtree = (function($, inputParams) {
     init();
 
     return {
-        reset
+        reset,
+        handlerInput
     }
 
 })(jQuery, $('#input_params'));
