@@ -13,10 +13,11 @@
     display: block;
 
     li {
-      height: 20px;
+      height: 10px;
       display: block;
       position: relative;
       margin: 0 auto;
+      will-change: transform;
     }
   }
 }

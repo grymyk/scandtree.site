@@ -16,6 +16,7 @@ function Voter(inputParams) {
     function lockControl(elem) {
         if (elem) {
             const value = elem.getAttribute('value');
+
             elem.setAttribute('max', value);
         }
     }
@@ -108,22 +109,19 @@ function Voter(inputParams) {
 
             let value = +input.getAttribute('value') + step;
 
-            if (value >= min && value <= max) {
+            if (min <= value && value <= max) {
                 input.setAttribute('value', value);
 
                 showControl(sibs);
             } else {
-                hideControl(input);
+                hideControl(target);
             }
 
-            if (value === min || value === max) {
-                hideControl(input);
+            if (min === value || value === max) {
+                hideControl(target);
             } else {
                 showControl(sibs);
             }
-
-            checkMaxSpread();
-
         } else {
             console.log('changeParam: No step && sibs!');
         }
@@ -247,7 +245,7 @@ function Voter(inputParams) {
 
         let value = +input.getAttribute('value');
 
-        if (value >= min && value <= max) {
+        if (min <= value && value <= max) {
             options.value = value;
             options.parameter = param;
 

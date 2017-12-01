@@ -10,15 +10,16 @@ const scandtree = (function($, inputParams) {
         input: {
             width: 16,
             height: 10,
-            branch: 11,
+            branch: 10,
             longBoard: 1000,
-            spread: 26,
-            trunk: 1
+            spread: 25,
+            trunk: 2
         },
 
         output: {
             count: null,
             delta: null,
+            scaleX: 1,
             allWidth: 0,
             piece: [],
             remainder: 0
@@ -239,8 +240,8 @@ const scandtree = (function($, inputParams) {
 
     function branchStyleTemplate(options) {
         return 'z-index: ' + options.zIndex + '; ' +
-            'width: ' + options.width + 'px;' +
-            'height: ' + options.height + 'px;"';
+            'width: ' + options.width + 'px;';
+            // 'height: ' + options.height + 'px;"';
     }
 
     function setBoardStyles(zIndex, width) {
@@ -476,22 +477,6 @@ const scandtree = (function($, inputParams) {
         return config.limit;
     }
 
-    function getArea() {
-        const maxWidth = getMaxWidthLimit();
-        const branch = getInputParam('branch');
-        const size = getSizeBranch();
-        const boardHeight = getInputParam('height');
-        const height = branch * size * boardHeight;
-        const tgAlpha = height / maxWidth;
-        //console.log('tgAlpha: ', tgAlpha);
-
-        const alpha = Math.atan(tgAlpha);
-        //console.log('alpha: ', alpha);
-        const base = height / Math.tan(alpha);
-
-        return height * base / 2;
-    }
-
     function boardElem(zIndex, width) {
         let li = document.createElement('LI');
 
@@ -522,9 +507,11 @@ const scandtree = (function($, inputParams) {
     }
 
     function getWidthBranch(index) {
-        const fulcrum = getInputParam('width');
+        const HALF_WIDTH = 2;
+        let fulcrum = getInputParam('width');
+        let delta = getOutputParam('delta');
 
-        return 2 * index * getOutputParam('delta') + fulcrum;
+        return HALF_WIDTH * index * delta + fulcrum;
     }
 
     function getMaxTrunk() {
@@ -600,14 +587,13 @@ const scandtree = (function($, inputParams) {
     }
 
     function getDelta(spread) {
-        const RADIAN = Math.PI / 180;
         const MAX_SPREAD = 179;
 
         const height = getInputParam('height');
         const size = getSizeBranch();
 
-        if (spread > 0 && spread < MAX_SPREAD) {
-            const radian = (90 - spread / 2) * RADIAN;
+        if (0 < spread && spread < MAX_SPREAD) {
+            const radian = (90 - spread / 2) * Math.PI / 180;
 
             return size * height / Math.tan(radian);
         }
@@ -616,7 +602,7 @@ const scandtree = (function($, inputParams) {
     }
 
     function setSpread() {
-        const spread = getInputParam('spread');
+        let spread = getInputParam('spread');
 
         let delta = getDelta(spread);
 
@@ -627,12 +613,12 @@ const scandtree = (function($, inputParams) {
         const longBoard = treeParam('branch');
         const lastBranch = treeParam('last');
 
-        let numberBranch = getInputParam('branch');
+        let branch = getInputParam('branch');
 
         let short = getInputParam('trunk');
 
-        if (numberBranch > 0 && short >= 1) {
-            let count = (longBoard + short) * numberBranch;
+        if (branch > 0 && short >= 1) {
+            let count = (longBoard + short) * branch;
             count += lastBranch;
 
             setOutputParam('count', count);
@@ -657,11 +643,11 @@ const scandtree = (function($, inputParams) {
         let parent = $(wrapper.treeParent)[0];
         parent.appendChild(topBoard);
 
-        let number = getInputParam('branch');
+        let branch = getInputParam('branch');
         let size = getSizeBranch('size');
 
         let i = 1;
-        let len = number * size + 1;
+        let len = branch * size + 1;
 
         let branches = createBranchElems(i, len);
 
@@ -708,7 +694,7 @@ const scandtree = (function($, inputParams) {
         return fragment;
     }
 
-    function appendBranch(diff) {
+    function appendBranch() {
         let parent = $(wrapper.treeParent)[0];
 
         const count = getOutputParam('count');
@@ -732,11 +718,13 @@ const scandtree = (function($, inputParams) {
 
     function deleteBranch(diff) {
         let parent = $(wrapper.treeParent)[0];
-        let branches = parent.getElementsByTagName('LI');
-        let size = getSizeBranch();
 
-        let begin = branches.length - 1;
-        let finish = begin - diff * size;
+        if (parent) {
+            let branches = parent.getElementsByTagName('LI');
+            let size = getSizeBranch();
+
+            let begin = branches.length - 1;
+            let finish = begin - diff * size;
 
             for (let i = begin; i > finish; i -= 1 ) {
                 if (branches[i]) {
@@ -744,16 +732,54 @@ const scandtree = (function($, inputParams) {
                 }
             }
         }
+    }
 
     function deleteScandTree() {
         let holder = $(wrapper.treeHolder)[0];
         let parent = $(wrapper.treeParent)[0];
 
-        holder.removeChild(parent);
+        if (holder && parent) {
+           holder.removeChild(parent);
+        }
     }
 
-    function updateScandTree() {
-        showScandTree();
+    function makeTransform() {
+        let k = getOutputParam('scaleX');
+        let size = getSizeBranch();
+        let holder = document.getElementById('tree_holder');
+        let parent = holder.firstChild;
+
+        if (parent) {
+            let boards = parent.getElementsByTagName('LI');
+            let value = 'scaleX(' + k + ')';
+
+            for (let i = 1, len = boards.length; i < len;) {
+                boards[i].style.setProperty('transform', value, '');
+                boards[i+1].style.setProperty('transform', value, '');
+
+                i += size;
+            }
+        }
+    }
+
+    function getDeformation(newSpread) {
+        const RADIAN = Math.PI / 360;
+        let oldSpread = getInputParam('spread');
+
+        let alpha = oldSpread * RADIAN;
+        let beta = newSpread * RADIAN;
+
+        let k = Math.tan(beta) / Math.tan(alpha);
+        setOutputParam('scaleX', k);
+    }
+    
+    function scaleX(spread) {
+        getDeformation(spread);
+        makeTransform();
+    }
+
+    function updateScandTree(spread) {
+        scaleX(spread);
     }
 
     function handlerInput(options) {
@@ -764,23 +790,27 @@ const scandtree = (function($, inputParams) {
 
             typeTree: (parameter, value) => {
                 if (parameter === 'branch') {
+                    setCount();
+
                     let current = getInputParam(parameter);
-                    let difference = value - current;
+                    let diff = value - current;
 
-                    if (difference > 0) {
-                        appendBranch(difference);
-                    } else if (difference < 0) {
-                        difference = Math.abs(difference);
+                    if (diff > 0) {
+                        appendBranch();
+                        makeTransform();
+                    } else if (diff < 0) {
+                        diff = Math.abs(diff);
 
-                        deleteBranch(difference);
+                        deleteBranch(diff);
                     }
 
                     setInputParam(parameter, value);
 
-                    setSpread();
-                    setCount();
-
-                } else {
+                } else if (parameter === 'spread') {
+                     setCount();
+  
+                     updateScandTree(value);
+                } else if (parameter === 'trunk') {
                     deleteScandTree();
 
                     setInputParam(parameter, value);
@@ -788,7 +818,10 @@ const scandtree = (function($, inputParams) {
                     setSpread();
                     setCount();
 
-                    updateScandTree();
+                    showScandTree();
+                    makeTransform();
+                } else {
+                    console.log('Noname Parameter!');
                 }
             },
 
@@ -796,10 +829,6 @@ const scandtree = (function($, inputParams) {
               setMaxCount(value);
             }
         };
-
-        setOwner(options.owner);
-        setMaxSpread();
-        setMaxBranch();
 
         strategy[options.mode](options.parameter, options.value);
     }
@@ -834,7 +863,6 @@ const scandtree = (function($, inputParams) {
         getInputValues();
 
         setSpread();
-        setCount();
 
         setMaxWidthLimit();
 
