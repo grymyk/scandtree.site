@@ -1,6 +1,6 @@
 'use strict';
 
-const scandtree = (function($, inputParams) {
+const scandtree = (function(inputParams) {
     const config = {
         board: {
             numberBoard: 1,
@@ -53,7 +53,7 @@ const scandtree = (function($, inputParams) {
             piece_width_holder: '.output .piece_width_holder'
         },
 
-        treeHolder: '#tree_holder',
+        treeHolder: 'tree_holder',
         treeParent: '#tree_holder ul'
     };
 
@@ -266,8 +266,11 @@ const scandtree = (function($, inputParams) {
 
     function showCountBrowser() {
         let count = getOutputParam('count');
+        let elem = document.querySelector(wrapper.output.count);
 
-        $(wrapper.output.count).html(count);
+        if (elem) {
+            elem.innerHTML = count;
+        }
     }
 
     function showCountConsole() {
@@ -278,16 +281,22 @@ const scandtree = (function($, inputParams) {
 
     function showAllWidth() {
         let width = getOutputParam('allWidth');
+        let elem = document.querySelector(wrapper.output.count);
 
         console.log('All Width: %s mm', width);
 
-        $(wrapper.output.all_width).html(width);
+        if (elem) {
+            elem.innerHTML = width;
+        }
     }
 
     function showAllWidthBrowser() {
         let width = getOutputParam('allWidth');
+        let elem = document.querySelector(wrapper.output.all_width);
 
-        $(wrapper.output.all_width).html(width);
+        if (elem) {
+            elem.innerHTML = width;
+        }
     }
 
     function showAllWidthConsole() {
@@ -301,7 +310,7 @@ const scandtree = (function($, inputParams) {
 
         console.log('Remainder: %d mm', remainder);
 
-        $(wrapper.output.remainder).html(remainder);
+        inputParams.querySelector(wrapper.output.remainder).innerHTML = remainder;
     }
 
     function showRemainderBrowser() {
@@ -309,8 +318,11 @@ const scandtree = (function($, inputParams) {
 
         let title = '<span>remainder: </span>';
         let description = '<span class="remainder">' + remainder + '</span>mm';
+        let elem = document.querySelector(wrapper.output.remainder_holder)
 
-        $(wrapper.output.remainder_holder).html(title + description);
+        if (elem) {
+            elem.innerHTML = title + description;
+        }
     }
 
     function showRemainderConsole() {
@@ -324,13 +336,16 @@ const scandtree = (function($, inputParams) {
 
         console.log('Number Board: %s mm', number);
 
-        $(wrapper.output.number_board).html(number);
+        inputParams.querySelector(wrapper.output.number_board).innerHTML = number;
     }
 
     function showNumberBoardBrowser() {
         let number = getBoardParam('numberBoard');
+        let elem = document.querySelector(wrapper.output.number_board);
 
-        $(wrapper.output.number_board).html(number);
+        if (elem) {
+            elem.innerHTML = number;
+        }
     }
 
     function showNumberBoardConsole() {
@@ -340,7 +355,7 @@ const scandtree = (function($, inputParams) {
     }
 
     function showPieceWidth() {
-        $(wrapper.output.piece_width).empty();
+        document.querySelector(wrapper.output.piece_width).innerHTML = '';
 
         let piece = getOutputParam('piece');
 
@@ -362,11 +377,11 @@ const scandtree = (function($, inputParams) {
 
         list += '</ul>';
 
-        $(wrapper.output.piece_width).html(list);
+        inputParams.querySelector(wrapper.output.piece_width).innerHTML = list;
     }
 
     function showPieceWidthBrowser() {
-        $(wrapper.output.piece_width).empty();
+        //document.querySelector(wrapper.output.piece_width).innerHTML = '';
 
         let piece = getOutputParam('piece');
 
@@ -396,7 +411,8 @@ const scandtree = (function($, inputParams) {
         list += '</ol>';
 
 
-        $(wrapper.output.piece_width_holder).html(head + list);
+        // $(wrapper.output.piece_width_holder).html(head + list);
+        //document.querySelector(wrapper.output.piece_width).innerHTML = head + list;
     }
 
     function showPieceWidthConsole() {
@@ -438,11 +454,11 @@ const scandtree = (function($, inputParams) {
     }
 
     function getHeightHolder() {
-        return $(wrapper.treeHolder).height();
+        return document.getElementById(wrapper.treeHolder).style.height;
     }
 
     function getWidthHolder() {
-        return $(wrapper.treeHolder).width();
+        return document.getElementById(wrapper.treeHolder).style.width;
     }
 
     function getOwner() {
@@ -525,7 +541,9 @@ const scandtree = (function($, inputParams) {
         const size = getSizeBranch();
         const height = getInputParam('height');
         const limit = getMaxWidthLimit();
-        const maxSpread = +$(wrapper.spreadInput)[0].getAttribute('max');
+        const spreadInput = inputParams.querySelector(wrapper.spreadInput);
+
+        const maxSpread = +spreadInput.getAttribute('max');
         const alphaRadian = maxSpread * Math.PI / 180;
 
         return Math.ceil( limit / Math.tan(alphaRadian / 2) / size / height);
@@ -534,7 +552,8 @@ const scandtree = (function($, inputParams) {
     function setMaxBranch() {
         const branch = getMaxBranch();
 
-        $(wrapper.branchInput)[0].setAttribute('max', branch);
+        let branchInput = inputParams.querySelector(wrapper.branchInput);
+        branchInput.setAttribute('max', branch);
     }
 
     function getMaxSpread(branch) {
@@ -555,7 +574,8 @@ const scandtree = (function($, inputParams) {
     function setMaxSpread() {
         const spread = getMaxSpread();
 
-        $(wrapper.spreadInput)[0].setAttribute('max', spread);
+        let spreadInput = document.querySelector(wrapper.spreadInput);
+        spreadInput.setAttribute('max', spread);
     }
 
     function createBranchElems(i, len) {
@@ -635,12 +655,12 @@ const scandtree = (function($, inputParams) {
     function showScandTree() {
         let branchesHolder = document.createElement('UL');
 
-        let holder = $(wrapper.treeHolder)[0];
+        let holder = document.getElementById(wrapper.treeHolder);
         holder.appendChild(branchesHolder);
 
         let topBoard = getTopBoard();
 
-        let parent = $(wrapper.treeParent)[0];
+        let parent = document.querySelector(wrapper.treeParent);
         parent.appendChild(topBoard);
 
         let branch = getInputParam('branch');
@@ -667,14 +687,20 @@ const scandtree = (function($, inputParams) {
         let fulcrum = getInputParam('width');
 
         let maxWidth = parseInt(2 * (count - 2) * delta + fulcrum - 2 * delta, 10);
+        let elem = document.querySelector(wrapper.output.width);
 
-        $(wrapper.output.width).html(maxWidth);
+        if (elem) {
+           elem.innerHTML = maxWidth;
+        }
     }
 
     function showHeightScandTree() {
         let height = getOutputParam('count') * getInputParam('height');
+        let elem = document.querySelector(wrapper.output.height);
 
-        $(wrapper.output.height).html(height);
+        if (elem) {
+            elem.innerHTML = height;
+        }
     }
 
     function setMaxCount(width) {
@@ -695,7 +721,7 @@ const scandtree = (function($, inputParams) {
     }
 
     function appendBranch() {
-        let parent = $(wrapper.treeParent)[0];
+        let parent = document.querySelector(wrapper.treeParent);
 
         const count = getOutputParam('count');
         const size = getSizeBranch();
@@ -717,7 +743,7 @@ const scandtree = (function($, inputParams) {
     }
 
     function deleteBranch(diff) {
-        let parent = $(wrapper.treeParent)[0];
+        let parent = document.querySelector(wrapper.treeParent);
 
         if (parent) {
             let branches = parent.getElementsByTagName('LI');
@@ -735,8 +761,8 @@ const scandtree = (function($, inputParams) {
     }
 
     function deleteScandTree() {
-        let holder = $(wrapper.treeHolder)[0];
-        let parent = $(wrapper.treeParent)[0];
+        let holder = document.getElementById(wrapper.treeHolder);
+        let parent = document.querySelector(wrapper.treeParent);
 
         if (holder && parent) {
            holder.removeChild(parent);
@@ -772,7 +798,7 @@ const scandtree = (function($, inputParams) {
         let k = Math.tan(beta) / Math.tan(alpha);
         setOutputParam('scaleX', k);
     }
-    
+
     function scaleX(spread) {
         getDeformation(spread);
         makeTransform();
@@ -808,7 +834,7 @@ const scandtree = (function($, inputParams) {
 
                 } else if (parameter === 'spread') {
                      setCount();
-  
+
                      updateScandTree(value);
                 } else if (parameter === 'trunk') {
                     deleteScandTree();
@@ -838,7 +864,7 @@ const scandtree = (function($, inputParams) {
     }
 
     function getInputValues() {
-        let inputs = inputParams.find('input');
+        let inputs = inputParams.querySelectorAll('input');
 
         for (let i = 0, len = inputs.length; i < len; i += 1 ) {
             let property = inputs[i].getAttribute('data-parameter');
@@ -885,4 +911,4 @@ const scandtree = (function($, inputParams) {
         handlerInput
     }
 
-})(jQuery, $('#input_params'));
+})(document.getElementById('input_params'));
