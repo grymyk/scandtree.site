@@ -10,3 +10,9 @@
 template:
 https://html5up.net/big-picture
 
+## styleguide
+bgColor: #aaaaaa40
+font-family: 'Roboto', sans-serif;
+color: #1F1F1F;
+hyperlink:
+    color: #2E6128;
